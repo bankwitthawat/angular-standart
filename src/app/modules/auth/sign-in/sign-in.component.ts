@@ -21,6 +21,7 @@ export class AuthSignInComponent implements OnInit
     };
     signInForm: FormGroup;
     showAlert: boolean = false;
+    returnUrl: string;
 
     /**
      * Constructor
@@ -29,7 +30,8 @@ export class AuthSignInComponent implements OnInit
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
         private _formBuilder: FormBuilder,
-        private _router: Router
+        protected router: Router,
+        private route: ActivatedRoute,
     )
     {
     }
@@ -49,6 +51,8 @@ export class AuthSignInComponent implements OnInit
             password  : ['admin', Validators.required],
             rememberMe: ['']
         });
+
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -60,6 +64,8 @@ export class AuthSignInComponent implements OnInit
      */
     signIn(): void
     {
+
+
         // Return if the form is invalid
         if ( this.signInForm.invalid )
         {
@@ -81,10 +87,10 @@ export class AuthSignInComponent implements OnInit
                     // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
                     // to the correct page after a successful sign in. This way, that url can be set via
                     // routing file and we don't have to touch here.
-                    const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+                    const  redirectURL =    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/signed-in-redirect';
 
                     // Navigate to the redirect url
-                    this._router.navigateByUrl(redirectURL);
+                    this.router.navigateByUrl(redirectURL);
 
                 },
                 (response) => {
