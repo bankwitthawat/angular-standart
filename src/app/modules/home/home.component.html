@@ -1,4 +1,4 @@
-<div class="flex flex-col flex-auto min-w-0">
+<div class="flex flex-col flex-auto h-auto min-w-0">
 
     <!-- Header -->
     <div class="dark bg-card dark:border-b">
@@ -10,14 +10,13 @@
                     </div>
                     <div class="flex flex-col min-w-0">
                         <ng-container>
-                            <div
-                                class="text-2xl md:text-5xl font-semibold tracking-tight md:leading-snug truncate">
+                            <div class="text-2xl md:text-5xl font-semibold tracking-tight md:leading-snug truncate">
                                 welcome-To App User!</div>
                         </ng-container>
 
                         <div class="flex items-center">
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:bell'"></mat-icon>
-                            <div class="ml-1.5 leading-6 truncate text-secondary">You have 2 new messages and 15 new
+                            <div class="ml-1.5 leading-6 truncate text-secondary">You have 2 new request and 15 new
                                 tasks</div>
                         </div>
                     </div>
@@ -26,7 +25,7 @@
                 <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3 mr-6">
                     <button class="fuse-mat-button-rounded bg-accent-600" mat-flat-button [color]="'accent'">
                         <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:mail'"></mat-icon>
-                        <span class="ml-2">Messages</span>
+                        <span class="ml-2">Request</span>
                     </button>
                     <button class="fuse-mat-button-rounded" mat-flat-button [color]="'primary'">
                         <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:cog'"></mat-icon>
@@ -123,6 +122,8 @@
             </mat-expansion-panel>
         </mat-accordion>
     </div>
+
+
 
     <!-- grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-auto min-w-0 m-4">

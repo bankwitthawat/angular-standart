@@ -5,7 +5,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Route, RouterModule } from '@angular/router';
-import { HomeComponent } from './home.component';
 import { TranslocoModule } from '@ngneat/transloco';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -18,18 +17,20 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { NgApexchartsModule } from 'ng-apexcharts';
+import { UseRoleComponent } from './user-role.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatRadioModule} from '@angular/material/radio';
 
 const homeRoutes: Route[] = [
     {
         path     : '',
-        component: HomeComponent
+        component: UseRoleComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        HomeComponent
+        UseRoleComponent
     ],
     imports     : [
         RouterModule.forChild(homeRoutes),
@@ -51,9 +52,10 @@ const homeRoutes: Route[] = [
         SharedModule,
         MatInputModule,
         MatPaginatorModule,
-        NgApexchartsModule
+        MatCheckboxModule,
+        MatRadioModule
     ]
 })
-export class HomeModule
+export class UserRoleModule
 {
 }

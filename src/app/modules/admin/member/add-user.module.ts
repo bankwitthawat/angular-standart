@@ -18,6 +18,10 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AddUserComponent } from './add-user.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import {MatSelectModule} from '@angular/material/select';
 
 const homeRoutes: Route[] = [
     {
@@ -25,6 +29,18 @@ const homeRoutes: Route[] = [
         component: AddUserComponent
     }
 ];
+
+const MY_FORMATS = {
+    parse: {
+      dateInput: 'LL',
+    },
+    display: {
+      dateInput: 'DD/MM/YYYY',
+      monthYearLabel: 'YYYY',
+      dateA11yLabel: 'LL',
+      monthYearA11yLabel: 'YYYY',
+    },
+  };
 
 @NgModule({
     declarations: [
@@ -49,8 +65,14 @@ const homeRoutes: Route[] = [
         CommonModule,
         SharedModule,
         MatInputModule,
-        MatPaginatorModule
-    ]
+        MatPaginatorModule,
+        MatDatepickerModule,
+        MatSelectModule
+    ],
+    providers: [
+        { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+        { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+      ],
 })
 export class AddUserModule
 {

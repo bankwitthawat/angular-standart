@@ -8,10 +8,10 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'group',
         children: [
             {
-                id: 'sub',
-                title: 'sub',
+                id: 'home',
+                title: 'Home',
                 type: 'collapsable',
-                icon: 'heroicons_outline:chart-pie',
+                icon: 'heroicons_outline:home',
                 children: [
                     {
                         id: 'home',
@@ -19,13 +19,43 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:home',
                         link: '/home'
+                    }
+                ]
+            },
+            {
+                id: 'user',
+                title: 'Authentication',
+                type: 'collapsable',
+                icon: 'heroicons_outline:users',
+                children: [
+                    {
+                        id: 'user-role',
+                        title: 'User Role',
+                        type: 'basic',
+                        icon: 'heroicons_outline:user',
+                        link: '/user-role'
                     },
                     {
-                        id: 'example',
+                        id: 'application',
                         title: 'App User',
                         type: 'basic',
-                        icon: 'heroicons_outline:clipboard-list',
+                        icon: 'heroicons_outline:user',
                         link: '/app-user'
+                    }
+                ]
+            },
+            {
+                id: 'setting',
+                title: 'Setting',
+                type: 'collapsable',
+                icon: 'heroicons_outline:cog',
+                children: [
+                    {
+                        id: 'profile',
+                        title: 'Profile',
+                        type: 'basic',
+                        icon: 'heroicons_outline:user',
+                        link: '/profile'
                     }
                 ]
             }

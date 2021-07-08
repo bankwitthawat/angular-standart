@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
 export interface PeriodicElement {
+    icon: any;
     name: string;
     position: number;
     weight: number;
@@ -9,16 +10,15 @@ export interface PeriodicElement {
   }
 
   const ELEMENT_DATA: PeriodicElement[] = [
-    {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-    {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-    {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-    {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-    {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-    {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-    {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-    {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-    {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-    {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+    {icon:[],position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
+    {icon:[],position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
+    {icon:[],position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
+    {icon:[],position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
+    {icon:[],position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
+    {icon:[],position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
+    {icon:[],position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
+    {icon:[],position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
+    {icon:[],position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
   ];
 
 
@@ -32,7 +32,7 @@ export class AppuserComponent
 {
     panelOpenState = false;
 
-    displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+    displayedColumns: string[] = ['icon','position', 'name', 'weight', 'symbol'];
     dataSource = ELEMENT_DATA;
     /**
      * Constructor

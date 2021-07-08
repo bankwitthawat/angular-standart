@@ -1,0 +1,96 @@
+<div class="flex flex-col flex-auto min-w-0">
+    <!-- Header -->
+    <div class="dark bg-card dark:border-b">
+        <div class="flex flex-col w-full max-w-screen-auto mx-auto">
+            <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 sm:my-12">
+                <!-- Avatar and name -->
+                <div class="flex flex-auto items-center min-w-0">
+                    <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                        <ng-container>
+                            <div class="text-2xl md:text-5xl font-semibold tracking-tight md:leading-snug truncate">
+                                welcome-To Setting User Role!</div>
+                        </ng-container>
+                        <div class="flex items-center">
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:bell'"></mat-icon>
+                            <div class="ml-1.5 leading-6 truncate text-secondary">You have 2 new request and 15 new
+                                tasks</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Actions -->
+                <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3 mr-6">
+                    <button class="fuse-mat-button-rounded bg-accent-600" mat-flat-button [color]="'accent'">
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:mail'"></mat-icon>
+                        <span class="ml-2">Request</span>
+                    </button>
+                    <!-- <button class="fuse-mat-button-rounded" mat-flat-button [color]="'primary'">
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user-add'"></mat-icon>
+                        <span class="ml-2">Add User</span>
+                    </button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Main -->
+    <div class="w-auto m-4">
+        <!-- table -->
+        <div class="example-container m-6">
+            <table class="border-lolid border bg-white border-gray-800 ...">
+                <thead>
+                    <tr>
+                        <th class="border border-gray-600 ...">No.</th>
+                        <th class="border border-gray-600 ...">Name</th>
+                        <th class="border border-gray-600 ...">Approve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-gray-600 ...">1</td>
+                        <td class="border border-gray-600 ...">Indianapolis</td>
+                        <td class="border border-gray-600 ...">
+                            <div>
+                                <section class="example-section">
+                                    <mat-radio-group [(ngModel)]="labelPosition">
+                                      <mat-radio-button class="example-margin" value="yes">Yes</mat-radio-button>
+                                      <mat-radio-button class="example-margin" value="no">No</mat-radio-button>
+                                    </mat-radio-group>
+                                  </section>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-600 ...">2</td>
+                        <td class="border border-gray-600 ...">Indianapolis</td>
+                        <td class="border border-gray-600 ...">
+                            <div>
+                                <section class="example-section">
+                                    <mat-radio-group [(ngModel)]="labelPosition1">
+                                      <mat-radio-button class="example-margin" value="yes1">Yes</mat-radio-button>
+                                      <mat-radio-button class="example-margin" value="no1">No</mat-radio-button>
+                                    </mat-radio-group>
+                                  </section>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-600 ...">3</td>
+                        <td class="border border-gray-600 ...">Indianapolis</td>
+                        <td class="border border-gray-600 ...">
+                            <div>
+                                <section class="example-section">
+                                    <mat-radio-group [(ngModel)]="labelPosition2">
+                                      <mat-radio-button class="example-margin" value="yes2">Yes</mat-radio-button>
+                                      <mat-radio-button class="example-margin" value="no2">No</mat-radio-button>
+                                    </mat-radio-group>
+                                  </section>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

@@ -98,6 +98,7 @@ export class UserComponent implements OnInit, OnDestroy
         this._router.navigate(['/sign-out']);
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     Profile(): void
     {
         this._router.navigate(['/profile']);

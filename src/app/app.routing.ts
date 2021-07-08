@@ -68,6 +68,7 @@ export const appRoutes: Route[] = [
             { path: 'profile', loadChildren: () => import('app/modules/auth/profile/profile.module').then(m => m.ProfileModule) },
             { path: 'app-user', loadChildren: () => import('app/modules/admin/app-user/app-user.module').then(m => m.AppUserModule) },
             { path: 'add-user', loadChildren: () => import('app/modules/admin/member/add-user.module').then(m => m.AddUserModule) },
+            { path: 'user-role', loadChildren: () => import('app/modules/admin/user-role/user-role.module').then(m => m.UserRoleModule) },
         ]
     },
 ];

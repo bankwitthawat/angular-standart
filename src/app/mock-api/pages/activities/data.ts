@@ -8,7 +8,7 @@ export const activities = [
         description : 'Your submission has been accepted',
         date        : moment().subtract(25, 'minutes').toISOString(), // 25 minutes ago
         extraContent: `<div class="font-bold">Congratulations for your acceptance!</div><br>
-                        <div>Hi Brian,<br>Your submission has been accepted and you are ready to move into the next phase. Once you are ready, reach out to me and we will ...</div>`
+                        <div>Hi Widely.next,<br>Your submission has been accepted and you are ready to move into the next phase. Once you are ready, reach out to me and we will ...</div>`
     },
     {
         id           : '6e3e97e5-effc-4fb7-b730-52a151f0b641',

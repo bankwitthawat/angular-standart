@@ -33,11 +33,12 @@ export class HomeComponent
 
     displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
     dataSource = ELEMENT_DATA;
+
     /**
      * Constructor
      */
-    constructor()
+    constructor(
+    )
     {
     }
-
 }
