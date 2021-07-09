@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Route, RouterModule } from '@angular/router';
-import { HomeComponent } from './home.component';
+import { HomeDetailComponent } from './home-detail.component';
 import { TranslocoModule } from '@ngneat/transloco';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -22,19 +22,19 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
-const homeRoutes: Route[] = [
+const homeDetailRoutes: Route[] = [
     {
         path     : '',
-        component: HomeComponent
+        component: HomeDetailComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        HomeComponent
+        HomeDetailComponent
     ],
     imports     : [
-        RouterModule.forChild(homeRoutes),
+        RouterModule.forChild(homeDetailRoutes),
         MatButtonModule,
         MatButtonToggleModule,
         MatDividerModule,
@@ -58,6 +58,6 @@ const homeRoutes: Route[] = [
         MatSnackBarModule
     ]
 })
-export class HomeModule
+export class HomeDetailModule
 {
 }

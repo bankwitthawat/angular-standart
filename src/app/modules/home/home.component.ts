@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface PeriodicElement {
     name: string;
@@ -30,6 +31,7 @@ export interface PeriodicElement {
 export class HomeComponent
 {
     panelOpenState = false;
+    hidden = false;
 
     displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
     dataSource = ELEMENT_DATA;
@@ -38,7 +40,18 @@ export class HomeComponent
      * Constructor
      */
     constructor(
+        private _snackBar: MatSnackBar
     )
     {
     }
+
+    toggleBadgeVisibility() {
+        this.hidden = !this.hidden;
+        this._snackBar.open('This Your Request', 'Success', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 2000,
+          }
+        );
+      }
 }

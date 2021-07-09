@@ -39,7 +39,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                                 title: 'Home Detail2',
                                 type: 'basic',
                                 icon: 'heroicons_outline:home',
-                                link: '/profile'
+                                link: '/home-detail'
                             }
                         ]
                     }
