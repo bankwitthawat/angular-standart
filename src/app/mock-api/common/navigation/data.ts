@@ -40,6 +40,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                                 type: 'basic',
                                 icon: 'heroicons_outline:home',
                                 link: '/home-detail'
+                            },
+                            {
+                                id: 'coming-soon',
+                                title: 'Coming Soon',
+                                type: 'basic',
+                                icon: 'heroicons_outline:template',
+                                link: '/coming-soon'
                             }
                         ]
                     }

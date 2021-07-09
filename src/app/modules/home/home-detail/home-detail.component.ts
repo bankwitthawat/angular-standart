@@ -28,10 +28,6 @@ export type ChartOptions = {
     subtitle: ApexTitleSubtitle;
 };
 
-export interface PropsInterface {
-    data: any;
-}
-
 @Component({
     selector: 'home-detail',
     templateUrl: './home-detail.component.html',
