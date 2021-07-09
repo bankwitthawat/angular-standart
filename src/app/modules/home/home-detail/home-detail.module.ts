@@ -21,6 +21,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 const homeDetailRoutes: Route[] = [
     {
@@ -55,7 +56,8 @@ const homeDetailRoutes: Route[] = [
         MatPaginatorModule,
         NgApexchartsModule,
         MatBadgeModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        NgxSpinnerModule
     ]
 })
 export class HomeDetailModule
