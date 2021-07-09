@@ -14,11 +14,34 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:home',
                 children: [
                     {
-                        id: 'home',
-                        title: 'Home',
-                        type: 'basic',
+                        id: 'home1',
+                        title: 'Home1',
+                        type: 'collapsable',
                         icon: 'heroicons_outline:home',
-                        link: '/home'
+                        children: [
+                            {
+                                id: 'home-detail',
+                                title: 'Home Detail',
+                                type: 'basic',
+                                icon: 'heroicons_outline:home',
+                                link: '/home'
+                            }
+                        ]
+                    },
+                    {
+                        id: 'home2',
+                        title: 'Home2',
+                        type: 'collapsable',
+                        icon: 'heroicons_outline:home',
+                        children: [
+                            {
+                                id: 'home',
+                                title: 'Home Detail2',
+                                type: 'basic',
+                                icon: 'heroicons_outline:home',
+                                link: '/profile'
+                            }
+                        ]
                     }
                 ]
             },
@@ -62,6 +85,8 @@ export const defaultNavigation: FuseNavigationItem[] = [
         ]
     }
 ];
+
+
 export const compactNavigation: FuseNavigationItem[] = [
     {
         id: 'example',

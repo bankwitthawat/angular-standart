@@ -49,7 +49,7 @@ export class ProfileComponent implements OnInit, OnDestroy
             {
                 id         : 'security',
                 icon       : 'heroicons_outline:lock-closed',
-                title      : 'Security',
+                title      : 'Change Your Password',
                 description: 'Manage your password and 2-step verification preferences'
             }
         ];
