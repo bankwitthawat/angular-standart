@@ -42,6 +42,7 @@ export interface PropsInterface {
 export class HomeDetailComponent {
     @ViewChild('chart') chart: ChartComponent;
     public chartOptions: Partial<ChartOptions>;
+
     /**
      * Constructor
      */
