@@ -1,61 +1,99 @@
 table {
     width: 100%;
-  }
+}
 
-  tr.example-detail-row {
-    height: 0;
-  }
+// tr.example-detail-row {
+//     height: 0;
+// }
 
-  tr.example-element-row:not(.example-expanded-row):hover {
-    background: whitesmoke;
-  }
+// tr.example-element-row:not(.example-expanded-row):hover {
+//     background: whitesmoke;
+// }
 
-  tr.example-element-row:not(.example-expanded-row):active {
-    background: #efefef;
-  }
+// tr.example-element-row:not(.example-expanded-row):active {
+//     background: #fff;
+// }
 
-  .example-element-row td {
-    border-bottom-width: 0;
-  }
+// .example-element-row td {
+//     border-bottom-width: 1px solid;
+// }
 
-  .example-element-detail {
+.example-element-detail {
     display: flex;
-  }
+}
 
-  .example-element-diagram {
+.example-element-diagram {
     min-width: 80px;
     border: 2px solid black;
     padding: 8px;
     font-weight: lighter;
     margin: 8px 0;
     height: 104px;
-  }
+}
 
-  .example-element-symbol {
+.example-element-symbol {
     font-weight: bold;
     font-size: 40px;
     line-height: normal;
-  }
+}
 
-  .example-element-description {
+.example-element-description {
     padding: 16px;
-  }
+}
 
-  .example-element-description-attribution {
+.example-element-description-attribution {
     opacity: 0.5;
-  }
+}
 
-  .example-h2 {
+.example-h2 {
     margin: 10px;
-  }
+}
 
-  .example-section {
+.example-section {
     display: flex;
     align-content: center;
     align-items: center;
     height: auto;
-  }
+}
 
-  .example-margin {
+.example-margin {
     margin: 5px;
-  }
+}
+
+// th {
+//     border: 1px solid #ebebeb;
+// }
+td {
+    border: 1px solid #ebebeb;
+}
+tr {
+    border: 1px solid #ebebeb;
+}
+
+table {
+    width: 100%;
+}
+
+.example-table-container {
+position: relative;
+min-height: auto !important;
+max-height: auto !important;
+min-width: 100% !important;
+max-width: 100% !important;
+overflow: auto;
+}
+
+th{
+border-right: 1px solid #e2e8f0;
+border-color: #e2e8f0;
+width: auto;
+background-color: #f1f4f9;
+align-items: center;
+}
+
+td{
+border-right: 1px solid;
+border-color: #e2e8f0;
+width: auto;
+}
+
