@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Subject, timer } from 'rxjs';
 import { finalize, takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { AuthService } from 'app/core/auth/auth.service';
-import { AuthenticationService } from '../auth.service';
+import { AuthenticationService } from '../../../shared/services/authentication.service';
 
 @Component({
     selector     : 'auth-sign-out',

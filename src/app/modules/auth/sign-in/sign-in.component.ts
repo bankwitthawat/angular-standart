@@ -5,7 +5,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 import { first } from 'rxjs/operators';
-import { AuthenticationService } from '../auth.service';
+import { AuthenticationService } from '../../../shared/services/authentication.service';
 
 @Component({
     selector     : 'auth-sign-in',

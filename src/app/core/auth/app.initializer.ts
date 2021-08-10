@@ -1,6 +1,6 @@
 
 import { Router } from '@angular/router';
-import { AuthenticationService } from 'app/modules/auth/auth.service';
+import { AuthenticationService } from 'app/shared/services/authentication.service';
 
 
 export const appInitializer = (authenticationService: AuthenticationService, router: Router) => {

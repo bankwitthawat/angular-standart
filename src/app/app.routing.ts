@@ -67,6 +67,10 @@ export const appRoutes: Route[] = [
             { path: 'app-user', loadChildren: () => import('app/modules/admin/app-user/app-user.module').then(m => m.AppUserModule) },
             { path: 'add-user', loadChildren: () => import('app/modules/admin/add-user/add-user.module').then(m => m.AddUserModule) },
             { path: 'user-role', loadChildren: () => import('app/modules/admin/user-role/user-role.module').then(m => m.UserRoleModule) },
+
+
+            //main
+            { path: 'app-role', loadChildren: () => import('app/modules/admin/app-role/app-role.module').then(m => m.AppRoleModule) },
         ]
     },
 ];

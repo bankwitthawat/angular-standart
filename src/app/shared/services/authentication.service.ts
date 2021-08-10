@@ -55,8 +55,6 @@ export class AuthenticationService {
                 this.startRefreshTokenTimer();
                 return response;
             }));
-
-
     }
 
     signOut(): void {

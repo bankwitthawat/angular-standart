@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Navigation } from 'app/core/navigation/navigation.types';
-import { AuthenticationService } from 'app/modules/auth/auth.service';
+import { AuthenticationService } from 'app/shared/services/authentication.service';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
 import { AppModuleAuthorize } from '../user/user.types';
 
@@ -56,6 +56,7 @@ export class NavigationService
         if (!this._authenticationService.currentUserValue) {
             return new Observable<Navigation>();
         }
+
         const appModule = this._authenticationService.currentUserValue.appModule;
         const response: FuseNavigationItem[] = this.treeNavigationMapping(appModule);
         const navigation: Navigation = {

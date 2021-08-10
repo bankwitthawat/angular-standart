@@ -4,7 +4,7 @@ import { AuthService } from 'app/core/auth/auth.service';
 import { AuthInterceptor } from 'app/core/auth/auth.interceptor';
 import { JwtInterceptor } from './jwt.interceptor';
 import { ErrorInterceptor } from './error.interceptor';
-import { AuthenticationService } from 'app/modules/auth/auth.service';
+import { AuthenticationService } from 'app/shared/services/authentication.service';
 import { appInitializer } from './app.initializer';
 
 @NgModule({
