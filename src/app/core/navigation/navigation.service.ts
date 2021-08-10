@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Navigation } from 'app/core/navigation/navigation.types';
+import { AuthenticationService } from 'app/modules/auth/auth.service';
+import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
+import { AppModuleAuthorize } from '../user/user.types';
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +18,9 @@ export class NavigationService
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient)
+    constructor(private _httpClient: HttpClient, private _authenticationService: AuthenticationService)
     {
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -37,12 +42,61 @@ export class NavigationService
     /**
      * Get all navigation data
      */
+    // get(): Observable<Navigation>
+    // {
+    //     return this._httpClient.get<Navigation>('api/common/navigation').pipe(
+    //         tap((navigation) => {
+    //             this._navigation.next(navigation);
+    //         })
+    //     );
+    // }
+
     get(): Observable<Navigation>
     {
-        return this._httpClient.get<Navigation>('api/common/navigation').pipe(
-            tap((navigation) => {
+        if (!this._authenticationService.currentUserValue) {
+            return new Observable<Navigation>();
+        }
+        const appModule = this._authenticationService.currentUserValue.appModule;
+        const response: FuseNavigationItem[] = this.treeNavigationMapping(appModule);
+        const navigation: Navigation = {
+            compact: response,
+            default: response,
+            futuristic: response,
+            horizontal: response,
+        };
+
+        return of(navigation).pipe(
+            tap((_) => {
                 this._navigation.next(navigation);
             })
         );
     }
+
+    private treeNavigationMapping(module: AppModuleAuthorize[])
+    {
+        return module.map(({
+            id,
+            title,
+            subtitle,
+            type,
+            path,
+            icon,
+            children = [],
+            ...rest
+        }) => {
+            const o: FuseNavigationItem = { type };
+            o.id = id.toString();
+            o.title = title;
+            o.subtitle = subtitle;
+            o.link = path;
+            o.type = type;
+            o.icon = icon;
+            if (children.length) {
+                o.children = this.treeNavigationMapping(children);
+            }
+
+            return o;
+        });
+    }
+
 }

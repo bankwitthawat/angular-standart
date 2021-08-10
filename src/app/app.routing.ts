@@ -1,8 +1,8 @@
 import { Route } from '@angular/router';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
-import { _AuthGuard } from './core/auth/guards/_auth.guard';
-import { _NoAuthGuard } from './core/auth/guards/_noAuth.guard';
+import { AuthGuard } from './core/auth/guards/auth.guard';
+import { NoAuthGuard } from './core/auth/guards/noAuth.guard';
 
 // @formatter:off
 // tslint:disable:max-line-length
@@ -21,8 +21,7 @@ export const appRoutes: Route[] = [
     // Auth routes for guests
     {
         path: '',
-        // canActivate: [_NoAuthGuard],
-        // canActivateChild: [NoAuthGuard],
+        canActivate: [NoAuthGuard],
         component: LayoutComponent,
         data: {
             layout: 'empty'
@@ -42,23 +41,20 @@ export const appRoutes: Route[] = [
     // Auth routes for authenticated users
     {
         path: '',
-        // canActivate: [_AuthGuard],
-        // canActivateChild: [AuthGuard],
+        canActivate: [AuthGuard],
         component: LayoutComponent,
         data: {
             layout: 'empty'
         },
         children: [
             { path: 'sign-out', loadChildren: () => import('app/modules/auth/sign-out/sign-out.module').then(m => m.AuthSignOutModule) },
-            { path: 'unlock-session', loadChildren: () => import('app/modules/auth/unlock-session/unlock-session.module').then(m => m.AuthUnlockSessionModule) }
         ]
     },
 
     // Admin routes
     {
         path: '',
-        // canActivate: [_AuthGuard],
-        // canActivateChild: [AuthGuard],
+        canActivate: [AuthGuard],
         component: LayoutComponent,
         resolve: {
             initialData: InitialDataResolver,
