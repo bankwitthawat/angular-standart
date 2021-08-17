@@ -4,13 +4,19 @@ import { AppRoleItemViewComponent } from './app-role-item/app-role-item.componen
 import { AppRoleListViewComponent } from './app-role-list/app-role-list.component';
 
 const routes: Routes = [
-    { path: '', pathMatch: 'full', redirectTo: 'roles'},
-    { path: 'roles', component: AppRoleListViewComponent },
-    { path: 'roles/:id', component: AppRoleItemViewComponent },
+    { path: '', pathMatch: 'full', redirectTo: 'roles' },
+    {
+        path: 'roles',
+        component: AppRoleListViewComponent,
+    },
+    {
+        path: 'roles/:id',
+        component: AppRoleItemViewComponent,
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
-export class AppRoleRoutingModule { }
+export class AppRoleRoutingModule {}

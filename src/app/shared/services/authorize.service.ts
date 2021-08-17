@@ -11,54 +11,22 @@ export class AuthorizeService {
 
     constructor(
         private _router: Router,
-        private _authenticationService: AuthenticationService
+        private _authenticationService: AuthenticationService,
+        private _authenSerive: AuthenticationService,
     ) { }
 
-    findAuthorizeByModule(rootModule: AppModuleAuthorize[], titleMatching: string): AccessAuthorize {
-        // const root = this._authenticationService.currentUserValue.appModule;
-        console.log('rootModule', rootModule);
-
-        for (const node of rootModule) {
-            console.log('node', node);
-            if (node.title.toLowerCase() === titleMatching.toLowerCase()) {
-                this.result.isAccess = node.isAccess;
-                this.result.isCreate = node.isCreate;
-                this.result.isEdit = node.isEdit;
-                this.result.isView = node.isView;
-                this.result.isDelete = node.isDelete;
-                return this.result;
-            }
-
-            if (node.children) {
-                this.findAuthorizeByModule(node.children, titleMatching);
-            }
-
-            return this.result || null;
-        }
-
-        // rootModule[i].some((n: AppModuleAuthorize) => {
-        //     console.log('n' ,n);
-        //     if (n.title.toLocaleLowerCase === titleMatching.toLocaleLowerCase) {
-        //         result.isAccess = n.isAccess;
-        //         result.isCreate = n.isCreate;
-        //         result.isEdit = n.isEdit;
-        //         result.isView = n.isView;
-        //         result.isDelete = n.isDelete;
-        //         return result;
-        //     }
-        //     if (n.children) {
-        //         return result = this.findAuthorizeByModule(n.children, titleMatching);
-        //     }
-        // });
-        // return result || null;
-        // return result;
+    setAccess(dirName: string): AccessAuthorize {
+        const myModule = this._authenSerive.currentUserValue.appModule;
+        return this.findAuthorizeByModule(myModule, dirName);
     }
 
-    findAuthorizeByModule2(rootNode: AppModuleAuthorize[], dirName: string): AccessAuthorize {
+
+    findAuthorizeByModule(rootNode: AppModuleAuthorize[], dirName: string): AccessAuthorize {
         const result: AccessAuthorize = { isAccess: false, isCreate: false, isEdit: false, isDelete: false, isView: false };
+
         for (let i = 0; i < rootNode.length; i++) {
-            console.log('rootModule[i]', rootNode[i]);
-            if (rootNode[i].title.toLowerCase() === dirName.toLowerCase()) {
+            // console.log('rootModule[i]', rootNode[i]);
+            if (rootNode[i].title.toUpperCase() === dirName.toUpperCase()) {
                 result.isAccess = rootNode[i].isAccess;
                 result.isCreate = rootNode[i].isCreate;
                 result.isEdit = rootNode[i].isEdit;
@@ -69,7 +37,7 @@ export class AuthorizeService {
             }
 
             if (rootNode[i].children && rootNode[i].children.length) {
-                const next = this.findAuthorizeByModule2(rootNode[i].children, dirName);
+                const next = this.findAuthorizeByModule(rootNode[i].children, dirName);
                 if (next) {
                     return next;
                 }

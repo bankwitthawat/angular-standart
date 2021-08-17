@@ -4,7 +4,10 @@ import { AuthenticationService } from 'app/shared/services/authentication.servic
 
 
 export const appInitializer = (authenticationService: AuthenticationService, router: Router) => {
-    if (authenticationService.currentUserValue) {
+
+    const currentUser = authenticationService.currentUserValue;
+
+    if (currentUser) {
         return () => new Promise((resolve) => {
             // attempt to refresh token on app start up to auto authenticate
             // authenticationService.refreshToken().subscribe().add(resolve);

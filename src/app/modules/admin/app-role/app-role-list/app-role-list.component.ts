@@ -1,38 +1,156 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccessAuthorize } from 'app/shared/constants/accessAuthorize';
+import { AppRoleView } from 'app/shared/models/viewModels/appRoleView';
+import {
+    GridCriteria,
+    GridResults,
+    Pagination,
+    Paginator,
+} from 'app/shared/models/viewModels/gridView';
 import { AuthenticationService } from 'app/shared/services/authentication.service';
 import { AuthorizeService } from 'app/shared/services/authorize.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { AppRoleService } from '../app-role.service';
 
 @Component({
-  selector: 'app-role-list',
-  templateUrl: './app-role-list.component.html',
-  styleUrls: ['./app-role-list.component.scss']
+    selector: 'app-role-list',
+    templateUrl: './app-role-list.component.html',
+    styleUrls: ['./app-role-list.component.scss'],
 })
-export class AppRoleListViewComponent implements OnInit {
+export class AppRoleListViewComponent implements OnInit, OnDestroy {
+    authorizeAccess: AccessAuthorize;
+    moduleName: string = 'Roles';
+    isLoading: boolean = false;
 
-  authorizeAccess: AccessAuthorize;
-  moduleName: string;
+    roleCol: any[];
+    roleColFrozen: any[];
+    roleList: GridResults<AppRoleView>;
+    roleSearch: GridCriteria<AppRoleView> = {
+        criteria: {},
+        gridCriteria: null,
+    };
+    searchFrom: FormGroup;
 
-  constructor(
-    private _authorizeSerive: AuthorizeService,
-    private _authenSerive: AuthenticationService,
-    private _router: Router,
-    private _activatedRoute: ActivatedRoute
-  ) {
-    // this.moduleName = this._activatedRoute.snapshot.url[0].path;
-    this.moduleName = 'Customer';
-  }
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-  ngOnInit(): void {
-    this.setAuthorizeOptions();
-  }
+    get form(): any {
+        return this.searchFrom.controls;
+    }
 
-  setAuthorizeOptions(): void {
-    const myModule = this._authenSerive.currentUserValue.appModule;
-    this.authorizeAccess = this._authorizeSerive.findAuthorizeByModule2(myModule, this.moduleName);
-    console.log('this.authorizeAccess', this.authorizeAccess);
-    // if (this.authorizeAccess.isAccess === false) { }
-  }
+    constructor(
+        private _router: Router,
+        private _activatedRoute: ActivatedRoute,
+        private _authorizeSerive: AuthorizeService,
+        private _authenSerive: AuthenticationService,
+        private _appRoleService: AppRoleService,
+        private _fb: FormBuilder
+    ) { }
 
+    // -----------------------------------------------------------------------------------------------------
+    // @ Lifecycle hooks
+    // -----------------------------------------------------------------------------------------------------
+
+    ngOnInit(): void {
+        this.setAuthorizeOptions();
+
+        this.initialForm();
+        this.gridBindings(this.roleSearch);
+    }
+
+    ngOnDestroy(): void {
+        // Unsubscribe from all subscriptions
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Prepare data
+     */
+    setAuthorizeOptions(): void {
+        this.authorizeAccess = this._authorizeSerive.setAccess(this.moduleName);
+        console.log('this.authorizeAccess', this.authorizeAccess);
+    }
+
+    initialForm(): void {
+        this.searchFrom = this._fb.group({
+            name: [''],
+            description: [''],
+        });
+    }
+
+    gridBindings(search: GridCriteria<AppRoleView>): void {
+        this.isLoading = true;
+
+        this._appRoleService
+            .getRoleList(search)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(
+                (response) => {
+                    this.roleList = response;
+                    this.isLoading = false;
+                },
+                (error) => {
+                    this.isLoading = false;
+                }
+            );
+
+        this.roleColFrozen = [{ field: '', header: '' }];
+
+        this.roleCol = [
+            { field: 'name', header: 'Name' },
+            { field: 'description', header: 'Description' },
+            { field: 'createdBy', header: 'Created By' },
+            { field: 'createdDate', header: 'Created Date' },
+            { field: 'modifiedBy', header: 'Modified By' },
+            { field: 'modifiedDate', header: 'Modified Date' },
+        ];
+    }
+
+    setSearchDefualt(): void {
+        this.roleSearch = {
+            criteria: {},
+            gridCriteria: null,
+        };
+    }
+
+    paginate(e: Paginator) {
+        this.roleSearch.gridCriteria = {
+            page: e.page + 1,
+            pageSize: e.rows,
+            totalPages: e.pageCount,
+            totalRecord: 0,
+            sortby: '',
+            sortdir: '',
+        };
+
+        this.gridBindings(this.roleSearch);
+    }
+
+    onSearch(): void {
+        this.roleSearch = {
+            criteria: {
+                name: this.form.name.value,
+                description: this.form.description.value,
+            },
+            gridCriteria: null,
+        };
+
+        this.gridBindings(this.roleSearch);
+        this.setSearchDefualt();
+    }
+
+    onView(params: any): void {
+        this._router.navigate(['/app-role/roles', params]);
+    }
+
+    onCreate(): void {
+        this._router.navigate(['/app-role/roles', 'new']);
+    }
 }
