@@ -29,7 +29,7 @@ export class AuthenticationService {
         return this.currentUserSubject.value;
     }
 
-    public get getCurrentUser(): Observable<User> {
+    public get getCurrentUser$(): Observable<User> {
         return this.currentUser;
     }
 

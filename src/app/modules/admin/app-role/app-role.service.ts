@@ -23,4 +23,8 @@ export class AppRoleService {
         return this._http
             .post<any>(`${environment.baseUrl}/api/approle/list`, search);
     }
+
+    getModuleList(id: string): Observable<any> {
+        return this._http.get<any>(`${environment.baseUrl}/api/approle/module-list?roleId=${id}`);
+    }
 }

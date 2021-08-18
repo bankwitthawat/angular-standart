@@ -22,19 +22,19 @@ export interface User {
     status?: string;
 }
 export interface AppModuleAuthorize {
-    id: number;
-    title: string;
-    subtitle: string;
-    type: any;
+    id?: number;
+    title?: string;
+    subtitle?: string;
+    type?: any;
     icon?: any;
     path?: any;
-    isActive: boolean;
-    sequence: number;
+    isActive?: boolean;
+    sequence?: number;
     parentID?: any;
-    isAccess: boolean;
-    isCreate: boolean;
-    isEdit: boolean;
-    isView: boolean;
-    isDelete: boolean;
-    children: AppModuleAuthorize[];
+    isAccess?: boolean;
+    isCreate?: boolean;
+    isEdit?: boolean;
+    isView?: boolean;
+    isDelete?: boolean;
+    children?: AppModuleAuthorize[];
 }

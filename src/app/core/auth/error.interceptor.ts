@@ -11,13 +11,12 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError((err) => {
-            let error = 'Service unavailable.';
-            if (err.status === 401) {
-                // auto logout if 401 response returned from api
+            if ([401, 403].includes(err.status) && this.authenticationService.currentUserValue) {
+                // auto logout if 401 or 403 response returned from api
                 this.authenticationService.signOut();
             }
 
-            error = err.error.message || err.error;
+            const error = (err && err.error && err.error.message) || `${err.statusText} Service unavailable, plaese try again.`;
             console.log(error);
             return throwError(error);
         }));

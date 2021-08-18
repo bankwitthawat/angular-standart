@@ -36,5 +36,80 @@
         </div>
 
 
+        <div class="flex flex-wrap w-full max-w-screen-xl mx-auto">
+            <div class="flex flex-col flex-auto w-full max-w-screen-xl mt-8 bg-card shadow rounded-t-xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 flex-wrap p-6">
+                    <div class="flex flex-col m-2">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Name</mat-label>
+                            <input matInput 
+                                class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
+                                type="text"  placeholder="" />
+                        </mat-form-field>
+                    </div>
+                    <div class="flex flex-col m-2">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Description</mat-label>
+                            <input matInput 
+                                class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
+                                type="text" placeholder="" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col flex-auto w-full max-w-screen-xl mt-8 bg-card shadow rounded-b-xl">
+                <div class="p-6">
+                    <div class="mr-4 text-lg font-medium tracking-tight leading-6 truncate">Module & Permission</div>
+                </div>
+                <div class="m-6 overflow-auto">
+                    <p-treeTable [value]="moduleTreeList" [loading]="isLoading">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th rowspan="2" class="" style="width:20rem;">Module Name</th>
+                                <th rowspan="2" class="text-center" style="width:10rem;">Type</th>
+                                <th colspan="5" class="text-center" style="width:30rem;">Permission</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center w-1/5">
+                                    Access
+                                    <mat-checkbox [color]="'primary'"></mat-checkbox>
+                                </th>
+                                <th class="text-center w-1/5">
+                                    Create
+                                    <mat-checkbox [color]="'primary'"></mat-checkbox>
+                                </th>
+                                <th class="text-center w-1/5">
+                                    View
+                                    <mat-checkbox [color]="'primary'"></mat-checkbox>
+                                </th>
+                                <th class="text-center w-1/5">
+                                    Edit
+                                    <mat-checkbox [color]="'primary'"></mat-checkbox>
+                                </th>
+                                <th class="text-center w-1/5">
+                                    Delete
+                                    <mat-checkbox [color]="'primary'"></mat-checkbox>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                            <tr>
+                                <td>
+                                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                                    {{rowData?.title}}
+                                </td>
+                                <td class="text-center">{{rowData?.type}}</td>
+                                <td class="text-center">{{rowData?.isAccess}}</td>
+                                <td class="text-center">{{rowData?.isCreate}}</td>
+                                <td class="text-center">{{rowData?.isView}}</td>
+                                <td class="text-center">{{rowData?.isEdit}}</td>
+                                <td class="text-center">{{rowData?.isDelete}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-treeTable>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
