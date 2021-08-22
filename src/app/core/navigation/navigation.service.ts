@@ -9,19 +9,19 @@ import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types
 import { AppModuleAuthorize } from '../user/user.types';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
-export class NavigationService
-{
-    private _navigation: ReplaySubject<Navigation> = new ReplaySubject<Navigation>(1);
+export class NavigationService {
+    private _navigation: ReplaySubject<Navigation> =
+        new ReplaySubject<Navigation>(1);
 
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient, private _authenticationService: AuthenticationService)
-    {
-
-    }
+    constructor(
+        private _httpClient: HttpClient,
+        private _authenticationService: AuthenticationService
+    ) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -30,8 +30,7 @@ export class NavigationService
     /**
      * Getter for navigation
      */
-    get navigation$(): Observable<Navigation>
-    {
+    get navigation$(): Observable<Navigation> {
         return this._navigation.asObservable();
     }
 
@@ -51,14 +50,15 @@ export class NavigationService
     //     );
     // }
 
-    get(): Observable<Navigation>
-    {
+    get(): Observable<Navigation> {
         if (!this._authenticationService.currentUserValue) {
             return new Observable<Navigation>();
         }
 
-        const appModule = this._authenticationService.currentUserValue.appModule;
-        const response: FuseNavigationItem[] = this.treeNavigationMapping(appModule);
+        const appModule =
+            this._authenticationService.currentUserValue.appModule;
+        const response: FuseNavigationItem[] =
+            this.treeNavigationMapping(appModule);
         const navigation: Navigation = {
             compact: response,
             default: response,
@@ -73,31 +73,31 @@ export class NavigationService
         );
     }
 
-    private treeNavigationMapping(module: AppModuleAuthorize[])
-    {
-        return module.map(({
-            id,
-            title,
-            subtitle,
-            type,
-            path,
-            icon,
-            children = [],
-            ...rest
-        }) => {
-            const o: FuseNavigationItem = { type };
-            o.id = id.toString();
-            o.title = title;
-            o.subtitle = subtitle;
-            o.link = path;
-            o.type = type;
-            o.icon = icon;
-            if (children.length) {
-                o.children = this.treeNavigationMapping(children);
+    private treeNavigationMapping(module: AppModuleAuthorize[]) {
+        return module.map(
+            ({
+                id,
+                title,
+                subtitle,
+                type,
+                path,
+                icon,
+                children = [],
+                ...rest
+            }) => {
+                const o: FuseNavigationItem = { type };
+                o.id = id.toString();
+                o.title = title;
+                o.subtitle = subtitle;
+                o.link = path;
+                o.type = type;
+                o.icon = icon;
+                if (children.length) {
+                    o.children = this.treeNavigationMapping(children);
+                }
+
+                return o;
             }
-
-            return o;
-        });
+        );
     }
-
 }

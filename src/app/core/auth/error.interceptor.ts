@@ -16,7 +16,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 this.authenticationService.signOut();
             }
 
-            const error = (err && err.error && err.error.message) || `${err.statusText} Service unavailable, plaese try again.`;
+            const error = (err || err.error || err.error.message || err.message) || 'Service unavailable, plaese try again.';
             console.log(error);
             return throwError(error);
         }));

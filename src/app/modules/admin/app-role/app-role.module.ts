@@ -19,6 +19,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { SharedModule } from 'app/shared/shared.module';
 import { TreeTableModule } from 'primeng/treetable';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatBadgeModule } from '@angular/material/badge';
 
 const PRIMENG_TABLE = [
   TableModule,
@@ -38,7 +39,8 @@ const MATERIAL = [
   MatInputModule,
   MatExpansionModule,
   MatFormFieldModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatBadgeModule
 ];
 @NgModule({
   declarations: [

@@ -11,6 +11,7 @@ import {
 } from 'app/shared/models/viewModels/gridView';
 import { AuthenticationService } from 'app/shared/services/authentication.service';
 import { AuthorizeService } from 'app/shared/services/authorize.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppRoleService } from '../app-role.service';
@@ -46,8 +47,9 @@ export class AppRoleListViewComponent implements OnInit, OnDestroy {
         private _authorizeSerive: AuthorizeService,
         private _authenSerive: AuthenticationService,
         private _appRoleService: AppRoleService,
-        private _fb: FormBuilder
-    ) { }
+        private _fb: FormBuilder,
+        private _spinner: NgxSpinnerService
+    ) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -55,7 +57,6 @@ export class AppRoleListViewComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.setAuthorizeOptions();
-
         this.initialForm();
         this.gridBindings(this.roleSearch);
     }

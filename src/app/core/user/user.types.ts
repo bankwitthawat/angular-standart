@@ -29,6 +29,7 @@ export interface AppModuleAuthorize {
     icon?: any;
     path?: any;
     isActive?: boolean;
+    isDisable?: boolean;
     sequence?: number;
     parentID?: any;
     isAccess?: boolean;

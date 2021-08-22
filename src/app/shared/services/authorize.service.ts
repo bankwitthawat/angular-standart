@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/prefer-for-of */
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppModuleAuthorize } from 'app/core/user/user.types';
 import { TreeNode } from 'primeng/api';
 import { AccessAuthorize } from '../constants/accessAuthorize';
@@ -17,16 +17,26 @@ export class AuthorizeService {
     };
 
     resultTreeNode: TreeNode<AppModuleAuthorize>[] = [];
+    currentModule: any;
 
     constructor(
         private _router: Router,
+        private _route: ActivatedRoute,
         private _authenticationService: AuthenticationService,
         private _authenSerive: AuthenticationService
     ) {}
 
     setAccess(dirName: string): AccessAuthorize {
-        const myModule = this._authenSerive.currentUserValue.appModule;
-        return this.findAuthorizeByModule(myModule, dirName);
+        this._authenSerive.getCurrentUser$.subscribe((val) => {
+            this.currentModule = val.appModule;
+        });
+
+        const result = this.findAuthorizeByModule(this.currentModule, dirName);
+        if (!result?.isAccess) {
+            this._router.navigate(['..'], { relativeTo: this._route });
+            return null;
+        }
+        return result;
     }
 
     findAuthorizeByModule(
@@ -65,5 +75,4 @@ export class AuthorizeService {
         }
     }
 
-    
 }

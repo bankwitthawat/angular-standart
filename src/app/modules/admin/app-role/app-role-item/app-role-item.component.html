@@ -12,11 +12,13 @@
                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:reply'"></mat-icon>
                     <span class="ml-2">Back</span>
                 </button>
-                <button class="hidden sm:inline-flex ml-3" mat-flat-button [color]="'primary'">
+                <button class="hidden sm:inline-flex ml-3" mat-flat-button [color]="'primary'"
+                    (click)="onSaveAndExit(true);" [disabled]="isLoading">
                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
                     <span class="ml-2">Save & Exit</span>
                 </button>
-                <button class="hidden sm:inline-flex ml-3" mat-flat-button [color]="'primary'">
+                <button class="hidden sm:inline-flex ml-3" mat-flat-button [color]="'primary'"
+                    (click)="onSaveAndExit(false);" [disabled]="isLoading">
                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
                     <span class="ml-2">Save</span>
                 </button>
@@ -27,8 +29,8 @@
                         <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
                     </button>
                     <mat-menu #actionsMenu="matMenu">
-                        <button mat-menu-item>Save</button>
-                        <button mat-menu-item>Save & Exit</button>
+                        <button mat-menu-item (click)="onSaveAndExit(false);" [disabled]="isLoading">Save</button>
+                        <button mat-menu-item (click)="onSaveAndExit(true);" [disabled]="isLoading">Save & Exit</button>
                         <button mat-menu-item (click)="onBack()">Back</button>
                     </mat-menu>
                 </div>
@@ -38,19 +40,31 @@
 
         <div class="flex flex-wrap w-full max-w-screen-xl mx-auto">
             <div class="flex flex-col flex-auto w-full max-w-screen-xl mt-8 bg-card shadow rounded-t-xl">
-                <div class="grid grid-cols-1 md:grid-cols-2 flex-wrap p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 flex-wrap p-6" [formGroup]="roleForm">
                     <div class="flex flex-col m-2">
-                        <mat-form-field appearance="fill">
+                        <mat-form-field class="fuse-mat-dense" appearance="fill">
                             <mat-label>Name</mat-label>
-                            <input matInput 
+                            <input matInput formControlName="name" [errorStateMatcher]="matcher" [required]="true"
                                 class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
-                                type="text"  placeholder="" />
+                                type="text" placeholder="" />
+                            <!-- <mat-error
+                                *ngIf=" form.name.invalid && (form.name.dirty || form.name.touched) && form.name.errors.required">
+                                Name is <strong>required</strong>
+                            </mat-error> -->
+
+                            <mat-error
+                                *ngIf="roleForm.get('name').hasError('required')">
+                                Name is <strong>required</strong>
+                            </mat-error>
+
+                            
+
                         </mat-form-field>
                     </div>
                     <div class="flex flex-col m-2">
-                        <mat-form-field appearance="fill">
+                        <mat-form-field class="fuse-mat-dense" appearance="fill">
                             <mat-label>Description</mat-label>
-                            <input matInput 
+                            <input matInput formControlName="description"
                                 class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
                                 type="text" placeholder="" />
                         </mat-form-field>
@@ -63,48 +77,90 @@
                     <div class="mr-4 text-lg font-medium tracking-tight leading-6 truncate">Module & Permission</div>
                 </div>
                 <div class="m-6 overflow-auto">
-                    <p-treeTable [value]="moduleTreeList" [loading]="isLoading">
+                    <p-treeTable [value]="moduleTreeList" [loading]="isLoading" [rowHover]="true">
                         <ng-template pTemplate="header">
                             <tr>
-                                <th rowspan="2" class="" style="width:20rem;">Module Name</th>
-                                <th rowspan="2" class="text-center" style="width:10rem;">Type</th>
+                                <th rowspan="2" style="width:20rem; vertical-align: bottom;">Module Name</th>
+                                <th rowspan="2" class="text-center" style="width:10rem; vertical-align: bottom;">Type
+                                </th>
                                 <th colspan="5" class="text-center" style="width:30rem;">Permission</th>
                             </tr>
                             <tr>
                                 <th class="text-center w-1/5">
                                     Access
-                                    <mat-checkbox [color]="'primary'"></mat-checkbox>
+                                    <!-- <mat-checkbox [color]="'primary'" [(ngModel)]="accessColCheck"
+                                        (change)="colSelectedAll(moduleTreeList,'ACCESS', $event);">
+                                    </mat-checkbox> -->
                                 </th>
                                 <th class="text-center w-1/5">
                                     Create
-                                    <mat-checkbox [color]="'primary'"></mat-checkbox>
+                                    <!-- <mat-checkbox [color]="'primary'" [(ngModel)]="createColCheck"
+                                        (change)="colSelectedAll(moduleTreeList,'CREATE', $event)"></mat-checkbox> -->
                                 </th>
                                 <th class="text-center w-1/5">
                                     View
-                                    <mat-checkbox [color]="'primary'"></mat-checkbox>
+                                    <!-- <mat-checkbox [color]="'primary'" [(ngModel)]="viewColCheck"
+                                        (change)="colSelectedAll(moduleTreeList,'VIEW',$event)"></mat-checkbox> -->
                                 </th>
                                 <th class="text-center w-1/5">
                                     Edit
-                                    <mat-checkbox [color]="'primary'"></mat-checkbox>
+                                    <!-- <mat-checkbox [color]="'primary'" [(ngModel)]="editColCheck"
+                                        (change)="colSelectedAll(moduleTreeList,'EDIT',$event)"></mat-checkbox> -->
                                 </th>
                                 <th class="text-center w-1/5">
                                     Delete
-                                    <mat-checkbox [color]="'primary'"></mat-checkbox>
+                                    <!-- <mat-checkbox [color]="'primary'" [(ngModel)]="delColCheck"
+                                        (change)="colSelectedAll(moduleTreeList,'DELETE',$event)"></mat-checkbox> -->
                                 </th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
                             <tr>
                                 <td>
-                                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-                                    {{rowData?.title}}
+                                    <div class="flex flex-row items-center">
+                                        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                                        <div class="flex flex-column">
+                                            <span class="font-medium tracking-tight">{{rowData?.title}}</span><br>
+                                            <!-- <span class="font-medium tracking-tight">{{rowData?.subtitle}}</span> -->
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="text-center">{{rowData?.type}}</td>
-                                <td class="text-center">{{rowData?.isAccess}}</td>
-                                <td class="text-center">{{rowData?.isCreate}}</td>
-                                <td class="text-center">{{rowData?.isView}}</td>
-                                <td class="text-center">{{rowData?.isEdit}}</td>
-                                <td class="text-center">{{rowData?.isDelete}}</td>
+                                <td class="text-center">
+                                    <span *ngIf="rowData.type === 'group'"
+                                        style="padding-top: 0.1em; padding-bottom: 0.1rem"
+                                        class="text-md font-medium px-3 bg-indigo-200 text-indigo-800 rounded-full w-max">
+                                        {{rowData.type | uppercase }}</span>
+                                    <span *ngIf="rowData.type === 'collapsable'"
+                                        style="padding-top: 0.1em; padding-bottom: 0.1rem"
+                                        class="text-md font-medium px-3 bg-orange-200 text-orange-800 rounded-full w-max">
+                                        {{rowData.type | uppercase }}</span>
+                                    <span *ngIf="rowData.type === 'basic'"
+                                        style="padding-top: 0.1em; padding-bottom: 0.1rem"
+                                        class="text-md font-medium px-3 bg-green-200 text-green-800 rounded-full w-max">
+                                        {{rowData.type | uppercase }}</span>
+                                </td>
+                                <td class="text-center">
+                                    <mat-checkbox [color]="'primary'" [(ngModel)]="rowData.isAccess"
+                                        *ngIf="rowData.type === 'basic'"
+                                        (change)="rowSelectedAccess(moduleTreeList, rowData.id, $event);">
+                                    </mat-checkbox>
+                                </td>
+                                <td class="text-center">
+                                    <mat-checkbox [color]="'primary'" [(ngModel)]="rowData.isCreate"
+                                        *ngIf="rowData.type === 'basic'" [disabled]="!rowData.isAccess"></mat-checkbox>
+                                </td>
+                                <td class="text-center">
+                                    <mat-checkbox [color]="'primary'" [(ngModel)]="rowData.isView"
+                                        *ngIf="rowData.type === 'basic'" [disabled]="!rowData.isAccess"></mat-checkbox>
+                                </td>
+                                <td class="text-center">
+                                    <mat-checkbox [color]="'primary'" [(ngModel)]="rowData.isEdit"
+                                        *ngIf="rowData.type === 'basic'" [disabled]="!rowData.isAccess"></mat-checkbox>
+                                </td>
+                                <td class="text-center">
+                                    <mat-checkbox [color]="'primary'" [(ngModel)]="rowData.isDelete"
+                                        *ngIf="rowData.type === 'basic'" [disabled]="!rowData.isAccess"></mat-checkbox>
+                                </td>
                             </tr>
                         </ng-template>
                     </p-treeTable>
