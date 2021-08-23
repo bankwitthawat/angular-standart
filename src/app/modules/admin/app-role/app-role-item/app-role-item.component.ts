@@ -120,6 +120,21 @@ export class AppRoleItemViewComponent implements OnInit, OnDestroy {
         this.authorizeAccess = this._authorizeSerive.setAccess(this.moduleName);
         this.authorizeAccess.pageMode = +this.id ? 'VIEW' : 'CREATE';
         console.log('this.authorizeAccess', this.authorizeAccess);
+
+        if (this.authorizeAccess.isAccess === false) {
+            this._messageService.add({severity:'error', summary: 'Error', detail: 'Access Denied.'});
+            this._router.navigate(['./'], { relativeTo: this._route.parent });
+        }
+
+        if (this.authorizeAccess.pageMode === 'CREATE' && this.authorizeAccess.isCreate === false) {
+            this._messageService.add({severity:'error', summary: 'Error', detail: 'Access Denied.'});
+            this._router.navigate(['./'], { relativeTo: this._route.parent });
+        }
+
+        if (this.authorizeAccess.pageMode === 'VIEW' && this.authorizeAccess.isView === false) {
+            this._messageService.add({severity:'error', summary: 'Error', detail: 'Access Denied.'});
+            this._router.navigate(['./'], { relativeTo: this._route.parent });
+        }
     }
 
     /**
@@ -140,7 +155,14 @@ export class AppRoleItemViewComponent implements OnInit, OnDestroy {
                 (result) => {
                     console.log(result);
                     if (result && result.success) {
-                        this.moduleList = result.data;
+                        // console.log(result);
+
+                        this.roleForm.patchValue({
+                            name: result.data.name || null,
+                            description: result.data.description || null,
+                        });
+
+                        this.moduleList = result.data.moduleList;
 
                         this.moduleTreeList = this.treeMapping(this.moduleList);
                         // console.log('this.moduleTreeList', this.moduleTreeList);
@@ -190,7 +212,7 @@ export class AppRoleItemViewComponent implements OnInit, OnDestroy {
         }
 
         const result = {
-            id: this.id || 0,
+            id: +this.id || 0,
             name: this.form.name.value,
             description: this.form.description.value,
             moduleList: [...this.resultData],
@@ -208,6 +230,9 @@ export class AppRoleItemViewComponent implements OnInit, OnDestroy {
                             this._router.navigate(['..'], {
                                 relativeTo: this._route,
                             });
+                        } else {
+                            this.roleForm.reset();
+                            this.initialData();
                         }
                     }
                 },
@@ -219,6 +244,20 @@ export class AppRoleItemViewComponent implements OnInit, OnDestroy {
             this._appRoleService.updateRole(result).subscribe(
                 (response) => {
                     this._spinner.hide();
+
+                    if (response.success) {
+                        // show toast
+                        this._messageService.add({severity:'success', summary: 'Success', detail: response.message});
+
+                        if (isExit) {
+                            this._router.navigate(['..'], {
+                                relativeTo: this._route,
+                            });
+                        } else {
+                            this.roleForm.reset();
+                            this.initialData();
+                        }
+                    }
                 },
                 (error) => {
                     this._spinner.hide();
@@ -317,24 +356,6 @@ export class AppRoleItemViewComponent implements OnInit, OnDestroy {
                     isDelete: obj.isDelete,
                 });
             }
-            // else {
-            //     this.resultData.push({
-            //         id: obj.id,
-            //         title: obj.title,
-            //         subtitle: obj.subtitle,
-            //         type: obj.type,
-            //         icon: obj.icon,
-            //         path: obj.path,
-            //         isActive: obj.isActive,
-            //         sequence: obj.sequence,
-            //         parentID: obj.parentID,
-            //         isAccess: false,
-            //         isCreate: false,
-            //         isEdit: false,
-            //         isView: false,
-            //         isDelete: false,
-            //     });
-            // }
 
             if (node.children.length) {
                 this.flatTreeResult(node.children);

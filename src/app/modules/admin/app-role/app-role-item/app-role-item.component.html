@@ -13,11 +13,13 @@
                     <span class="ml-2">Back</span>
                 </button>
                 <button class="hidden sm:inline-flex ml-3" mat-flat-button [color]="'primary'"
+                    *ngIf="authorizeAccess.pageMode === 'CREATE' ? authorizeAccess.isCreate : authorizeAccess.isEdit"
                     (click)="onSaveAndExit(true);" [disabled]="isLoading">
                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
                     <span class="ml-2">Save & Exit</span>
                 </button>
                 <button class="hidden sm:inline-flex ml-3" mat-flat-button [color]="'primary'"
+                    *ngIf="authorizeAccess.pageMode === 'CREATE' ? authorizeAccess.isCreate : authorizeAccess.isEdit"
                     (click)="onSaveAndExit(false);" [disabled]="isLoading">
                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
                     <span class="ml-2">Save</span>
@@ -29,8 +31,11 @@
                         <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
                     </button>
                     <mat-menu #actionsMenu="matMenu">
-                        <button mat-menu-item (click)="onSaveAndExit(false);" [disabled]="isLoading">Save</button>
-                        <button mat-menu-item (click)="onSaveAndExit(true);" [disabled]="isLoading">Save & Exit</button>
+                        <button mat-menu-item (click)="onSaveAndExit(false);" [disabled]="isLoading"
+                            *ngIf="authorizeAccess.pageMode === 'CREATE' ? authorizeAccess.isCreate : authorizeAccess.isEdit">Save</button>
+                        <button mat-menu-item (click)="onSaveAndExit(true);" [disabled]="isLoading"
+                            *ngIf="authorizeAccess.pageMode === 'CREATE' ? authorizeAccess.isCreate : authorizeAccess.isEdit">Save
+                            & Exit</button>
                         <button mat-menu-item (click)="onBack()">Back</button>
                     </mat-menu>
                 </div>
@@ -44,21 +49,12 @@
                     <div class="flex flex-col m-2">
                         <mat-form-field class="fuse-mat-dense" appearance="fill">
                             <mat-label>Name</mat-label>
-                            <input matInput formControlName="name" [errorStateMatcher]="matcher" [required]="true"
+                            <input matInput formControlName="name" [errorStateMatcher]="matcher" [readonly]="true"
                                 class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
                                 type="text" placeholder="" />
-                            <!-- <mat-error
-                                *ngIf=" form.name.invalid && (form.name.dirty || form.name.touched) && form.name.errors.required">
-                                Name is <strong>required</strong>
-                            </mat-error> -->
-
-                            <mat-error
-                                *ngIf="roleForm.get('name').hasError('required')">
+                            <mat-error *ngIf="roleForm.get('name').hasError('required')">
                                 Name is <strong>required</strong>
                             </mat-error>
-
-                            
-
                         </mat-form-field>
                     </div>
                     <div class="flex flex-col m-2">

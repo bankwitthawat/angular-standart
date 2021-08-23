@@ -21,7 +21,7 @@
 
                 <div class="flex items-center ml-6">
                     <button class="fuse-mat-button-rounded hidden sm:inline-flex" mat-flat-button [color]="'primary'"
-                        (click)="onCreate()" *ngIf="authorizeAccess.isCreate">
+                        (click)="onCreate()" *ngIf="authorizeAccess?.isCreate">
                         <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:plus'"></mat-icon>
                         <span class="ml-2">Add Role</span>
                     </button>
@@ -60,7 +60,7 @@
                 <div class="flex flex-col m-2">
                     <mat-form-field appearance="fill">
                         <mat-label>Name</mat-label>
-                        <input matInput formControlName="name"
+                        <input matInput formControlName="name" (keyup.enter)="onSearch()"
                             class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
                             type="text" aria-label="Search" placeholder="" />
                     </mat-form-field>
@@ -68,7 +68,7 @@
                 <div class="flex flex-col m-2">
                     <mat-form-field appearance="fill">
                         <mat-label>Description</mat-label>
-                        <input matInput formControlName="description"
+                        <input matInput formControlName="description" (keyup.enter)="onSearch()"
                             class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
                             type="text" aria-label="Search" placeholder="" />
                     </mat-form-field>
@@ -107,11 +107,11 @@
                     <ng-template pTemplate="body" let-rowData let-columns="columns">
                         <tr>
                             <td class="text-center" style="width: 150px">
-                                <button mat-icon-button [color]="'primary'" *ngIf="authorizeAccess.isEdit"
+                                <button mat-icon-button [color]="'primary'" *ngIf="authorizeAccess?.isView"
                                     (click)="onView(rowData.id)">
                                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
                                 </button>
-                                <button mat-icon-button [color]="'warn'" *ngIf="authorizeAccess.isDelete">
+                                <button mat-icon-button [color]="'warn'" *ngIf="authorizeAccess?.isDelete" (click)="onDelete(rowData)">
                                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
                                 </button>
                             </td>
