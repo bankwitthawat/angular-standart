@@ -21,6 +21,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { SharedModule } from 'app/shared/shared.module';
 import { AppUserListViewComponent } from './app-user-list/app-user-list.component';
 import { AppUserItemViewComponent } from './app-user-item/app-user-item.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 const PRIMENG_TABLE = [
   TableModule,
@@ -41,7 +42,8 @@ const MATERIAL = [
   MatExpansionModule,
   MatFormFieldModule,
   MatCheckboxModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatAutocompleteModule
 ];
 
 

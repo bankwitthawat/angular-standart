@@ -81,7 +81,7 @@ export class AuthSignInComponent implements OnInit
             .pipe(first())
             .subscribe({
                 next: (data) => {
-                    console.log(data);
+                    // console.log(data);
                     this.signInForm.enable();
                     this.showAlert = true;
 

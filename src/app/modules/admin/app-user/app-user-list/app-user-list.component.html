@@ -55,26 +55,54 @@
             <div class="grid grid-cols-1 md:grid-cols-2 flex-wrap">
                 <div class="flex flex-col m-2">
                     <mat-form-field appearance="fill">
-                        <mat-label>Name</mat-label>
-                        <input matInput formControlName="name"
+                        <mat-label>Username</mat-label>
+                        <input matInput formControlName="username"
                             class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
                             type="text" aria-label="Search" placeholder="" />
                     </mat-form-field>
                 </div>
                 <div class="flex flex-col m-2">
                     <mat-form-field appearance="fill">
-                        <mat-label>Description</mat-label>
+                        <mat-label>Full Name</mat-label>
                         <input matInput
                             class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
                             type="text" aria-label="Search" placeholder="" />
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col m-2">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Role</mat-label>
+                        <input matInput [matAutocomplete]="auto"
+                            class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
+                            type="text" aria-label="Search" placeholder="Pick one" />
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <!-- <mat-option *ngFor="let option of rolesOptions | async" [value]="option">
+                                    {{option}}
+                                </mat-option> -->
+                                <mat-option [value]="1">1</mat-option>
+                                <mat-option [value]="2">2</mat-option>
+                                <mat-option [value]="3">3</mat-option>
+                            </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col m-2">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Active / Inactive</mat-label>
+                        <input matInput 
+                            class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
+                            type="text" aria-label="Search" placeholder="" />
+                        
                     </mat-form-field>
                 </div>
             </div>
 
             <!-- Footer -->
             <mat-divider class="my-4"></mat-divider>
-            <div class="grid grid-row lg:justify-end md:w-full">
-                <button class="fuse-mat-button-rounded w-full" mat-flat-button [color]="'primary'">
+            <div class="flex items-center justify-end w-full mt-8">
+                <button mat-button>
+                    <span class="ml-2">Reset</span>
+                </button>
+                <button class="fuse-mat-button-rounded ml-2" mat-flat-button [color]="'primary'">
                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:search'"></mat-icon>
                     <span class="ml-2">Search</span>
                 </button>
@@ -90,8 +118,117 @@
             </div>
 
             <div class="mx-6 mb-6 overflow-auto" style="min-height: 400px">
-
+                <p-table [value]="userList?.items" [loading]="isLoading" styleClass="p-datatable-striped p-datatable-sm"
+                    [style]="{ width : '100%'}" responsiveLayout="scroll">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th class="text-center" style="width: 150px"></th>
+                            <th class="whitespace-normal break-all" style="width: 200px">
+                                Username
+                            </th>
+                            <th class="whitespace-normal break-all" style="width: 200px">
+                                Role
+                            </th>
+                            <th class="whitespace-normal break-all" style="width: 200px">
+                                Email
+                            </th>
+                            <th class="whitespace-normal break-all" style="width: 200px">
+                                Full Name
+                            </th>
+                            <th class="whitespace-normal break-all" style="width: 200px">
+                                IsActive
+                            </th>
+                            <th class="whitespace-normal break-all" style="width: 200px">
+                                Login Attemp Count
+                            </th>
+                            <th class="whitespace-normal break-all" style="width: 200px">
+                                Last Login
+                            </th>
+                            <th class="whitespace-normal break-all" style="width: 200px">
+                                Last Change Password
+                            </th>
+                            <th class="whitespace-normal break-all" style="width: 200px">
+                                Created By
+                            </th>
+                            <th class="whitespace-normal break-all" style="width: 200px">
+                                Created Date
+                            </th>
+                            <th class="whitespace-normal break-all" style="width: 200px">
+                                Modified By
+                            </th>
+                            <th class="whitespace-normal break-all" style="width: 200px">
+                                Modified Date
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData>
+                        <tr>
+                            <td class="text-center" style="width: 150px">
+                                <button mat-icon-button [color]="'primary'" *ngIf="authorizeAccess?.isView"
+                                    (click)="onView(rowData.id)">
+                                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
+                                </button>
+                                <button mat-icon-button [color]="'warn'" *ngIf="authorizeAccess?.isDelete"
+                                    (click)="onDelete(rowData)">
+                                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                                </button>
+                            </td>
+                            <td style="width: 200px">
+                                {{rowData.username}}
+                            </td>
+                            <td style="width: 200px">
+                                {{rowData.roleDescription}}
+                            </td>
+                            <td style="width: 200px">
+                                {{rowData.email}}
+                            </td>
+                            <td style="width: 200px">
+                                {{rowData.fullName}}
+                            </td>
+                            <td style="width: 200px">
+                                <span
+                                    [ngClass]="{ 'bg-green-200 text-green-800': rowData.isActive , 'bg-red-200 text-red-800': !rowData.isActive }"
+                                    class="text-md font-medium px-3 rounded-full w-max ng-star-inserted">
+                                    {{rowData.isActive ? 'Active': 'Inactive'}}
+                                </span>
+                            </td>
+                            <td style="width: 200px">
+                                {{rowData.loginAttemptCount}}
+                            </td>
+                            <td style="width: 200px">
+                                {{rowData.lastLogin}}
+                            </td>
+                            <td style="width: 200px">
+                                {{rowData.lastChangePwd}}
+                            </td>
+                            <td style="width: 200px">
+                                {{rowData.createdBy}}
+                            </td>
+                            <td style="width: 200px">
+                                {{rowData.createdDate}}
+                            </td>
+                            <td style="width: 200px">
+                                {{rowData.modifiedBy}}
+                            </td>
+                            <td style="width: 200px">
+                                {{rowData.modifiedDate}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td [attr.colspan]="13">
+                                No records found
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </div>
+            <p-paginator [rows]="userList?.pagination?.pageSize" [totalRecords]="userList?.pagination?.totalRecord"
+                [rowsPerPageOptions]="[10,25,50]" [showPageLinks]="false" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                (onPageChange)="paginate($event)">
+            </p-paginator>
         </div>
     </div>
 

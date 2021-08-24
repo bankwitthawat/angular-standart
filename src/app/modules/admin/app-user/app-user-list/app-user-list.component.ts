@@ -3,10 +3,18 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { AccessAuthorize } from 'app/shared/constants/accessAuthorize';
+import { AppUserView } from 'app/shared/models/viewModels/appUserView';
+import {
+    GridResults,
+    GridCriteria,
+    Paginator,
+} from 'app/shared/models/viewModels/gridView';
 import { AuthorizeService } from 'app/shared/services/authorize.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { AppUserService } from '../app-user.service';
 
 @Component({
     selector: 'app-app-user-list',
@@ -19,6 +27,12 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
     isLoading: boolean = false;
 
     searchFrom: FormGroup;
+    userList: GridResults<AppUserView>;
+    userSearch: GridCriteria<AppUserView> = {
+        criteria: {},
+        gridCriteria: null,
+    };
+    rolesOptions: any;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -35,7 +49,8 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
         private _fb: FormBuilder,
         private _spinner: NgxSpinnerService,
         private _messageService: MessageService,
-        private _fuseConfirmationService: FuseConfirmationService
+        private _fuseConfirmationService: FuseConfirmationService,
+        private _appUserService: AppUserService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -44,6 +59,7 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.setAuthorizeOptions();
         this.initialForm();
+        this.gridBindings();
     }
 
     ngOnDestroy(): void {
@@ -77,9 +93,62 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
     /**
      * Prepare data
      */
-     initialForm(): void {
-      this.searchFrom = this._fb.group({
-          name: [''],
-      });
-  }
+    initialForm(): void {
+        this.searchFrom = this._fb.group({
+            username: [''],
+        });
+    }
+
+    gridBindings(): void {
+        this.isLoading = true;
+        this._spinner.show();
+
+        this._appUserService
+            .getUserList(this.userSearch)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(
+                (response) => {
+                  console.log(response);
+                    this.userList = response;
+                    this.isLoading = false;
+                    this._spinner.hide();
+                },
+                (error) => {
+                    this.isLoading = false;
+                    this._spinner.hide();
+                }
+            );
+    }
+
+    setSearchDefualt(): void {
+        this.userSearch = {
+            criteria: {},
+            gridCriteria: null,
+        };
+    }
+
+    paginate(e: Paginator) {
+        this.userSearch.gridCriteria = {
+            page: e.page + 1,
+            pageSize: e.rows,
+            totalPages: e.pageCount,
+            totalRecord: 0,
+            sortby: '',
+            sortdir: '',
+        };
+
+        this.gridBindings();
+    }
+
+    onSearch(): void {
+        this.userSearch = {
+            criteria: {
+                username: this.form.username.value,
+            },
+            gridCriteria: null,
+        };
+
+        this.gridBindings();
+        this.setSearchDefualt();
+    }
 }

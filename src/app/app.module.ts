@@ -50,7 +50,6 @@ const routerConfig: ExtraOptions = {
         NgxSpinnerModule,
         ToastModule,
 
-        
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [
