@@ -91,9 +91,11 @@ export class AppRoleListViewComponent implements OnInit, OnDestroy {
                 summary: 'Error',
                 detail: 'Access Denied.',
             });
-            this._router.navigate(['./'], {
-                relativeTo: this._activatedRoute.parent,
-            });
+            // this._router.navigate(['./'], {
+            //     relativeTo: this._activatedRoute.parent,
+            // });
+
+            this._router.navigate(['/home']);
         }
     }
 

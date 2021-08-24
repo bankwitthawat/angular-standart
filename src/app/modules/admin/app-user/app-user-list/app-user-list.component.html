@@ -3,27 +3,25 @@
     <div class="bg-card">
         <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
             <div class="flex  sm:items-center min-w-0 my-8 sm:my-12">
-
                 <div class="flex flex-auto items-center justify-between min-w-0">
                     <div class="flex flex-col min-w-0 ml-4">
                         <div
                             class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate ng-star-inserted">
-                            Roles Management
+                            Users Management
                         </div>
 
                         <div class="flex items-center">
                             <div class="ml-1.5 leading-6 truncate text-secondary">
-                                manage roles, create edit or delete
+                                manage users, create edit or delete
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <div class="flex items-center ml-6">
                     <button class="fuse-mat-button-rounded hidden sm:inline-flex" mat-flat-button [color]="'primary'"
-                        (click)="onCreate()" *ngIf="authorizeAccess?.isCreate">
+                        *ngIf="authorizeAccess?.isCreate">
                         <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:plus'"></mat-icon>
-                        <span class="ml-2">Add Role</span>
+                        <span class="ml-2">Add User</span>
                     </button>
 
                     <!-- Actions menu (visible on xs) -->
@@ -32,20 +30,18 @@
                             <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
                         </button>
                         <mat-menu #actionsMenu="matMenu">
-                            <button mat-menu-item (click)="onCreate()">Add Role</button>
+                            <button mat-menu-item>Add User</button>
                         </mat-menu>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
     <!-- Body -->
     <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
-
         <!-- Search Panel -->
-        <mat-expansion-panel multi
+        <mat-expansion-panel multi [formGroup]="searchFrom"
             class="flex flex-col flex-auto w-full max-w-screen-xl mt-2 bg-card shadow rounded-2xl ">
             <mat-expansion-panel-header [collapsedHeight]="'50px'">
                 <mat-panel-title>
@@ -56,11 +52,11 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <mat-divider class="my-4"></mat-divider>
-            <div class="grid grid-cols-1 md:grid-cols-2 flex-wrap" [formGroup]="searchFrom">
+            <div class="grid grid-cols-1 md:grid-cols-2 flex-wrap">
                 <div class="flex flex-col m-2">
                     <mat-form-field appearance="fill">
                         <mat-label>Name</mat-label>
-                        <input matInput formControlName="name" (keyup.enter)="onSearch()"
+                        <input matInput formControlName="name"
                             class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
                             type="text" aria-label="Search" placeholder="" />
                     </mat-form-field>
@@ -68,7 +64,7 @@
                 <div class="flex flex-col m-2">
                     <mat-form-field appearance="fill">
                         <mat-label>Description</mat-label>
-                        <input matInput formControlName="description" (keyup.enter)="onSearch()"
+                        <input matInput
                             class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
                             type="text" aria-label="Search" placeholder="" />
                     </mat-form-field>
@@ -78,7 +74,7 @@
             <!-- Footer -->
             <mat-divider class="my-4"></mat-divider>
             <div class="grid grid-row lg:justify-end md:w-full">
-                <button class="fuse-mat-button-rounded w-full" mat-flat-button [color]="'primary'" (click)="onSearch()">
+                <button class="fuse-mat-button-rounded w-full" mat-flat-button [color]="'primary'">
                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:search'"></mat-icon>
                     <span class="ml-2">Search</span>
                 </button>
@@ -94,47 +90,9 @@
             </div>
 
             <div class="mx-6 mb-6 overflow-auto" style="min-height: 400px">
-                <p-table [columns]="roleCol" [value]="roleList?.items" [loading]="isLoading"
-                    styleClass="p-datatable-striped" [style]="{ width : '100%'}" responsiveLayout="scroll">
-                    <ng-template pTemplate="header" let-columns>
-                        <tr>
-                            <th class="text-center" style="width: 150px"></th>
-                            <th class="whitespace-normal break-all" style="width: 200px" *ngFor="let col of columns">
-                                {{col.header}}
-                            </th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-rowData let-columns="columns">
-                        <tr>
-                            <td class="text-center" style="width: 150px">
-                                <button mat-icon-button [color]="'primary'" *ngIf="authorizeAccess?.isView"
-                                    (click)="onView(rowData.id)">
-                                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
-                                </button>
-                                <button mat-icon-button [color]="'warn'" *ngIf="authorizeAccess?.isDelete" (click)="onDelete(rowData)">
-                                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
-                                </button>
-                            </td>
-                            <td style="width: 200px" *ngFor="let col of columns">
-                                {{rowData[col.field]}}
-                            </td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="emptymessage" let-columns>
-                        <tr>
-                            <td [attr.colspan]="columns.length + 1">
-                                No records found
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </div>
-            <p-paginator [rows]="roleList?.pagination?.pageSize" [totalRecords]="roleList?.pagination?.totalRecord"
-                [rowsPerPageOptions]="[10,25,50]" [showPageLinks]="false" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                (onPageChange)="paginate($event)">
-            </p-paginator>
-        </div>
 
+            </div>
+        </div>
     </div>
+
 </div>

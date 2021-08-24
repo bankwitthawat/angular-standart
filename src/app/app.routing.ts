@@ -63,14 +63,12 @@ export const appRoutes: Route[] = [
             { path: 'home', loadChildren: () => import('app/modules/home/home.module').then(m => m.HomeModule) },
             { path: 'home-detail', loadChildren: () => import('app/modules/home/home-detail/home-detail.module').then(m => m.HomeDetailModule) },
             { path: 'coming-soon', loadChildren: () => import('app/modules/home/coming-soon/coming-soon.module').then(m => m.ComingSoonModule) },
-            { path: 'profile', loadChildren: () => import('app/modules/auth/profile/profile.module').then(m => m.ProfileModule) },
-            { path: 'app-user', loadChildren: () => import('app/modules/admin/app-user/app-user.module').then(m => m.AppUserModule) },
-            { path: 'add-user', loadChildren: () => import('app/modules/admin/add-user/add-user.module').then(m => m.AddUserModule) },
-            { path: 'user-role', loadChildren: () => import('app/modules/admin/user-role/user-role.module').then(m => m.UserRoleModule) },
 
 
             //main
+            { path: 'profile', loadChildren: () => import('app/modules/auth/profile/profile.module').then(m => m.ProfileModule) },
             { path: 'app-role', loadChildren: () => import('app/modules/admin/app-role/app-role.module').then(m => m.AppRoleModule) },
+            { path: 'app-user', loadChildren: () => import('app/modules/admin/app-user/app-user.module').then(m => m.AppUserModule) },
         ]
     },
 ];

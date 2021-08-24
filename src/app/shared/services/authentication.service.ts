@@ -46,7 +46,7 @@ export class AuthenticationService {
 
 
     signIn(username: string, password: string, rememberMe: boolean) {
-        return this.http.post<any>(`${environment.baseUrl}/api/auth/login`, { username, password, rememberMe })
+        return this.http.post<any>(`${environment.baseUrl}/api/auth/login`, { username, password, rememberMe }, { withCredentials: true })
             .pipe(map((response) => {
                 // console.log(response);
                 const userResult = response.data;
@@ -68,14 +68,16 @@ export class AuthenticationService {
     }
 
     revokeToken() {
-        return this.http.post<any>(`${environment.baseUrl}/api/auth/logout`, { Token: this.currentUserValue.refreshToken }).subscribe();
+        return this.http.post<any>(`${environment.baseUrl}/api/auth/logout`, {
+            Token: this.currentUserValue.refreshToken
+        }, { withCredentials: true }).subscribe();
     }
 
     refreshToken() {
         console.log('refreshToken Start!!');
         return this.http.post<any>(`${environment.baseUrl}/api/auth/refreshtoken`, {
             Token: this.currentUserValue.refreshToken,
-        })
+        }, { withCredentials: true })
             .pipe(
                 map((user) => {
                     const userResult = user.data;
