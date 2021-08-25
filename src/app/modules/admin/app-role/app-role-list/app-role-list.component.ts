@@ -12,7 +12,7 @@ import {
     GridResults,
     Pagination,
     Paginator,
-} from 'app/shared/models/viewModels/gridView';
+} from 'app/shared/models/common/gridView';
 import { AuthenticationService } from 'app/shared/services/authentication.service';
 import { AuthorizeService } from 'app/shared/services/authorize.service';
 import { NgxSpinnerService } from 'ngx-spinner';

@@ -54,7 +54,7 @@
             <mat-divider class="my-4"></mat-divider>
             <div class="grid grid-cols-1 md:grid-cols-2 flex-wrap">
                 <div class="flex flex-col m-2">
-                    <mat-form-field appearance="fill">
+                    <mat-form-field>
                         <mat-label>Username</mat-label>
                         <input matInput formControlName="username"
                             class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
@@ -62,36 +62,32 @@
                     </mat-form-field>
                 </div>
                 <div class="flex flex-col m-2">
-                    <mat-form-field appearance="fill">
+                    <mat-form-field>
                         <mat-label>Full Name</mat-label>
-                        <input matInput
+                        <input matInput formControlName="fullName"
                             class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
                             type="text" aria-label="Search" placeholder="" />
                     </mat-form-field>
                 </div>
-                <div class="flex flex-col m-2">
-                    <mat-form-field appearance="fill">
+                <div class="flex m-2">
+                    <mat-form-field class="flex-auto">
                         <mat-label>Role</mat-label>
-                        <input matInput [matAutocomplete]="auto"
-                            class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
-                            type="text" aria-label="Search" placeholder="Pick one" />
-                            <mat-autocomplete #auto="matAutocomplete">
-                                <!-- <mat-option *ngFor="let option of rolesOptions | async" [value]="option">
-                                    {{option}}
-                                </mat-option> -->
-                                <mat-option [value]="1">1</mat-option>
-                                <mat-option [value]="2">2</mat-option>
-                                <mat-option [value]="3">3</mat-option>
-                            </mat-autocomplete>
+                        <mat-select placeholder="Choose an option" formControlName="role">
+                            <mat-option>None</mat-option>
+                            <mat-option *ngFor="let option of rolesOptions" [value]="option.id">
+                                {{option.label}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="flex flex-col m-2">
-                    <mat-form-field appearance="fill">
+                <div class="flex m-2">
+                    <mat-form-field class="flex-auto">
                         <mat-label>Active / Inactive</mat-label>
-                        <input matInput 
-                            class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
-                            type="text" aria-label="Search" placeholder="" />
-                        
+                        <mat-select placeholder="Choose an option" formControlName="isActive">
+                            <mat-option>None</mat-option>
+                            <mat-option [value]="true">Active</mat-option>
+                            <mat-option [value]="false">Inactive</mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
             </div>
@@ -99,10 +95,10 @@
             <!-- Footer -->
             <mat-divider class="my-4"></mat-divider>
             <div class="flex items-center justify-end w-full mt-8">
-                <button mat-button>
+                <button mat-button (click)="onReset()">
                     <span class="ml-2">Reset</span>
                 </button>
-                <button class="fuse-mat-button-rounded ml-2" mat-flat-button [color]="'primary'">
+                <button class="fuse-mat-button-rounded ml-2" mat-flat-button [color]="'primary'" (click)="onSearch()">
                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:search'"></mat-icon>
                     <span class="ml-2">Search</span>
                 </button>

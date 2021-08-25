@@ -1,6 +1,7 @@
 export class AppUserView {
     id?: number = 0;
     username?: string;
+    roleId?: number;
     roleDescription?: string;
     fullName?: string;
     birthDate?: string;

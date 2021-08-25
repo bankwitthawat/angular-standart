@@ -8,13 +8,14 @@ import {
     GridResults,
     GridCriteria,
     Paginator,
-} from 'app/shared/models/viewModels/gridView';
+} from 'app/shared/models/common/gridView';
 import { AuthorizeService } from 'app/shared/services/authorize.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppUserService } from '../app-user.service';
+import { OptionItems } from 'app/shared/models/common/optionsView';
 
 @Component({
     selector: 'app-app-user-list',
@@ -32,7 +33,7 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
         criteria: {},
         gridCriteria: null,
     };
-    rolesOptions: any;
+    rolesOptions: OptionItems[] = [];;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -96,7 +97,12 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
     initialForm(): void {
         this.searchFrom = this._fb.group({
             username: [''],
+            fullName: [''],
+            role: [''],
+            isActive: ['']
         });
+
+        this.getRoleListToDropDownList();
     }
 
     gridBindings(): void {
@@ -108,7 +114,7 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
                 (response) => {
-                  console.log(response);
+                //   console.log(response);
                     this.userList = response;
                     this.isLoading = false;
                     this._spinner.hide();
@@ -144,11 +150,28 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
         this.userSearch = {
             criteria: {
                 username: this.form.username.value,
+                fullName: this.form.fullName.value,
+                roleId: this.form.role.value,
+                isActive: this.form.isActive.value,
             },
             gridCriteria: null,
         };
 
         this.gridBindings();
         this.setSearchDefualt();
+    }
+
+    onReset(): void {
+        this.searchFrom.reset();
+    }
+
+    getRoleListToDropDownList(): void {
+        this._appUserService.getRoleListToDropDownList()
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(
+            (response: any) => {
+                this.rolesOptions = response.data;
+            }
+        );
     }
 }
