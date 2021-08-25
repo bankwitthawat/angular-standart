@@ -21,6 +21,7 @@ import { ErrorInterceptor } from './core/auth/error.interceptor';
 import { JwtInterceptor } from './core/auth/jwt.interceptor';
 import { AuthenticationService } from './shared/services/authentication.service';
 
+
 const routerConfig: ExtraOptions = {
     scrollPositionRestoration: 'enabled',
     preloadingStrategy: PreloadAllModules,
