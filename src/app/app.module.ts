@@ -15,15 +15,12 @@ import { appRoutes } from 'app/app.routing';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-<<<<<<< HEAD
-import { ReportRolesComponent } from './modules/demo/report-roles/report-roles.component';
-=======
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { appInitializer } from './core/auth/app.initializer';
 import { ErrorInterceptor } from './core/auth/error.interceptor';
 import { JwtInterceptor } from './core/auth/jwt.interceptor';
 import { AuthenticationService } from './shared/services/authentication.service';
->>>>>>> origin
+
 
 const routerConfig: ExtraOptions = {
     scrollPositionRestoration: 'enabled',
@@ -31,7 +28,7 @@ const routerConfig: ExtraOptions = {
 };
 
 @NgModule({
-    declarations: [AppComponent, ReportRolesComponent],
+    declarations: [AppComponent],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
