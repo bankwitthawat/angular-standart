@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ReportRolesComponent } from './report-roles/report-roles.component';
 
 const routes: Routes = [
-    //{ path: '', pathMatch: 'full', redirectTo: 'demo' },
+    { path: '', pathMatch: 'full', redirectTo: 'rolesreport' },
     {
         path: 'rolesreport',
         component: ReportRolesComponent,

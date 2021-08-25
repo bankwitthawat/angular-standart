@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
@@ -16,11 +16,14 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppUserService } from '../app-user.service';
 import { OptionItems } from 'app/shared/models/common/optionsView';
+import { MatDialog } from '@angular/material/dialog';
+import { AppUserCreateComponent } from '../components/app-user-create/app-user-create.component';
 
 @Component({
     selector: 'app-app-user-list',
     templateUrl: './app-user-list.component.html',
     styleUrls: ['./app-user-list.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class AppUserListViewComponent implements OnInit, OnDestroy {
     authorizeAccess: AccessAuthorize;
@@ -33,7 +36,7 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
         criteria: {},
         gridCriteria: null,
     };
-    rolesOptions: OptionItems[] = [];;
+    rolesOptions: OptionItems[] = [];
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -51,7 +54,8 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
         private _spinner: NgxSpinnerService,
         private _messageService: MessageService,
         private _fuseConfirmationService: FuseConfirmationService,
-        private _appUserService: AppUserService
+        private _appUserService: AppUserService,
+        private _matDialog: MatDialog
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -99,7 +103,7 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
             username: [''],
             fullName: [''],
             role: [''],
-            isActive: ['']
+            isActive: [''],
         });
 
         this.getRoleListToDropDownList();
@@ -114,7 +118,7 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
                 (response) => {
-                //   console.log(response);
+                    //   console.log(response);
                     this.userList = response;
                     this.isLoading = false;
                     this._spinner.hide();
@@ -169,6 +173,18 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
         this._router.navigate(['/app-user/users', 'new']);
     }
 
+    onCreateDialog(): void {
+        const dialogRef = this._matDialog.open(AppUserCreateComponent);
+
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log(result);
+            if (result === 'confirmed') {
+                this.setSearchDefualt();
+                this.gridBindings();
+            }
+        });
+    }
+
     onView(params: any): void {
         // console.log(params);
         this._router.navigate(['/app-user/users', params]);
@@ -177,12 +193,11 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
     onDelete(): void {}
 
     getRoleListToDropDownList(): void {
-        this._appUserService.getRoleListToDropDownList()
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe(
-            (response: any) => {
+        this._appUserService
+            .getRoleListToDropDownList()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((response: any) => {
                 this.rolesOptions = response.data;
-            }
-        );
+            });
     }
 }

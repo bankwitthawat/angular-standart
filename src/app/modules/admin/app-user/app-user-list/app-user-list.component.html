@@ -18,10 +18,10 @@
                     </div>
                 </div>
                 <div class="flex items-center ml-6">
-                    <button class="fuse-mat-button-rounded hidden sm:inline-flex" mat-flat-button [color]="'primary'" (click)="onCreate()"
+                    <button class="fuse-mat-button-rounded hidden sm:inline-flex" mat-flat-button [color]="'primary'" (click)="onCreateDialog()"
                         *ngIf="authorizeAccess?.isCreate">
                         <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:plus'"></mat-icon>
-                        <span class="ml-2">Add User</span>
+                        <span class="ml-2">Create User</span>
                     </button>
 
                     <!-- Actions menu (visible on xs) -->
@@ -30,7 +30,7 @@
                             <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
                         </button>
                         <mat-menu #actionsMenu="matMenu">
-                            <button mat-menu-item>Add User</button>
+                            <button mat-menu-item  (click)="onCreateDialog()">Create User</button>
                         </mat-menu>
                     </div>
                 </div>

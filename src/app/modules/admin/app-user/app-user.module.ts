@@ -23,6 +23,10 @@ import { AppUserListViewComponent } from './app-user-list/app-user-list.componen
 import { AppUserItemViewComponent } from './app-user-item/app-user-item.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
+import { AppUserItemViewSettingsComponent } from './app-user-item/app-user-item-settings/app-user-item-settings.component';
+import { AppUserCreateComponent } from './components/app-user-create/app-user-create.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const PRIMENG_TABLE = [
   TableModule,
@@ -45,13 +49,18 @@ const MATERIAL = [
   MatCheckboxModule,
   MatBadgeModule,
   MatAutocompleteModule,
-  MatSelectModule
+  MatSelectModule,
+  MatSlideToggleModule,
+  MatDialogModule
 ];
 
 
 @NgModule({
   declarations: [
-    AppUserListViewComponent, AppUserItemViewComponent
+    AppUserListViewComponent,
+    AppUserItemViewComponent,
+    AppUserItemViewSettingsComponent,
+    AppUserCreateComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,196 @@
+<!-- <div class="flex flex-col max-w-240 md:min-w-160 max-h-screen -m-6">
+    Header
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <div class="text-lg font-medium">Craete User</div>
+        <button mat-icon-button (click)="onClose()" [tabIndex]="-1">
+            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    Craete Form
+    <form class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto">
+        <p class="text-lg font-medium">Basic information</p>
+        <p class="text-secondary mb-6">
+            Set your login preferences, help us personalize your experience and make big account changes here
+        </p>
+        <div class="flex">
+            <mat-form-field class="flex-auto">
+                <mat-label>Username</mat-label>
+                <input type="text" matInput />
+            </mat-form-field>
+        </div>
+        <div class="flex">
+            <mat-form-field class="flex-auto">
+                <mat-label>Password</mat-label>
+                <input type="text" matInput />
+            </mat-form-field>
+        </div>
+        <div class="flex">
+            <mat-form-field class="flex-auto">
+                <mat-label>Role</mat-label>
+                <input type="text" matInput />
+            </mat-form-field>
+        </div>
+
+        <div class="flex flex-col gt-sm:flex-row">
+            <div class="flex flex-col">
+                <span class="font-semibold mb-2">Force Change Password</span>
+                <mat-slide-toggle [color]="'primary'">No / Yes</mat-slide-toggle>
+            </div>
+
+            <div class="flex flex-col mt-8 gt-sm:mt-0 gt-sm:ml-16">
+                <span class="font-semibold mb-2">Enable</span>
+                <mat-slide-toggle [color]="'primary'">Inactive / Active</mat-slide-toggle>
+            </div>
+        </div>
+
+        <mat-divider class="mt-6 mb-10"></mat-divider>
+
+        <p class="text-lg font-medium">Profile</p>
+        <p class="text-secondary mb-6">
+            People here will get to know you with this information
+        </p>
+        <div class="flex">
+            <mat-form-field class="flex-auto">
+                <input matInput [placeholder]="'Email Address'">
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:mail'"></mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="flex flex-col gt-xs:flex-row">
+            <mat-form-field class="flex-auto gt-xs:pr-3">
+                <input matInput [placeholder]="'First name'">
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+            </mat-form-field>
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+                <input matInput [placeholder]="'Last name'">
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+            </mat-form-field>
+        </div>
+
+        Action
+        <div class="flex items-center justify-end w-full mt-8">
+            <button mat-stroked-button>
+                Discard
+            </button>
+            <button class="fuse-mat-button-rounded ml-2" mat-flat-button [color]="'primary'">
+                Send
+            </button>
+        </div>
+    </form>
+
+</div> -->
+
+
+
+<h2 mat-dialog-title>Craete User</h2>
+<mat-dialog-content class="mat-typography">
+
+    <form class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto" [formGroup]="createUserForm">
+        <p class="text-lg font-semibold">Basic information</p>
+        <p class="text-secondary mb-6">
+            Set your login preferences, help us personalize your experience and make big account changes here
+        </p>
+        <div class="flex">
+            <mat-form-field class="flex-auto">
+                <mat-label class="font-semibold">
+                    Username
+                    <span style="color:red;">*</span>
+                </mat-label>
+                <input type="text" matInput formControlName="username" />
+                <mat-error *ngIf="createUserForm.get('username').hasError('required')">
+                    Username is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex">
+            <mat-form-field class="flex-auto">
+                <mat-label class="font-semibold">
+                    Password
+                    <span style="color:red;">*</span>
+                </mat-label>
+                <input type="text" matInput formControlName="password" />
+                <mat-error *ngIf="createUserForm.get('password').hasError('required')">
+                    Password is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex">
+            <mat-form-field class="flex-auto">
+                <mat-label class="font-semibold">
+                    Role
+                    <span style="color:red;">*</span>
+                </mat-label>
+                <mat-select placeholder="Choose an option" formControlName="role">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let option of rolesOptions" [value]="option.id">
+                        {{option.label}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="createUserForm.get('role').hasError('required')">
+                    Role is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="flex flex-col gt-sm:flex-row">
+            <div class="flex flex-col">
+                <span class="font-medium mb-2">Force Change Password</span>
+                <mat-slide-toggle [color]="'primary'" formControlName="forceChangePassword">
+                    {{form.forceChangePassword.value ? 'Yes': 'No'}}
+                </mat-slide-toggle>
+            </div>
+
+            <div class="flex flex-col mt-8 gt-sm:mt-0 gt-sm:ml-16">
+                <span class="font-medium mb-2">Enable</span>
+                <mat-slide-toggle [color]="'primary'" formControlName="isActive">
+                    {{ form.isActive.value ? 'Active' : 'Inactive'}}
+                </mat-slide-toggle>
+            </div>
+        </div>
+
+        <mat-divider class="mt-6 mb-10"></mat-divider>
+
+        <p class="text-lg font-semibold">User Profile</p>
+        <p class="text-secondary mb-6">
+            (Optional)
+        </p>
+        <div class="flex">
+            <mat-form-field class="flex-auto">
+                <input matInput [placeholder]="'Email Address'" formControlName="email">
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:mail'"></mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="flex flex-col gt-xs:flex-row">
+            <mat-form-field class="flex-auto gt-xs:pr-3">
+                <input matInput [placeholder]="'First name'" formControlName="fName">
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+            </mat-form-field>
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+                <input matInput [placeholder]="'Last name'" formControlName="lName">
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="flex">
+            <mat-form-field class="flex-auto">
+                <input matInput [placeholder]="'Mobile Phone'" formControlName="mobilePhone">
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:phone'"></mat-icon>
+            </mat-form-field>
+        </div>
+
+        <!-- Action
+        <div class="flex items-center justify-end w-full mt-8">
+            <button mat-stroked-button>
+                Discard
+            </button>
+            <button class="fuse-mat-button-rounded ml-2" mat-flat-button [color]="'primary'">
+                Send
+            </button>
+        </div> -->
+    </form>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button [matDialogClose]="'cancelled'">Cancel</button>
+    <button mat-raised-button cdkFocusInitial  [color]="'primary'" [disabled]="isLoading"
+        (click)="onCraete();">Save</button>
+</mat-dialog-actions>
