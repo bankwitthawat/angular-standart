@@ -15,6 +15,7 @@ import { appRoutes } from 'app/app.routing';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { ReportRolesComponent } from './modules/demo/report-roles/report-roles.component';
 
 const routerConfig: ExtraOptions = {
     scrollPositionRestoration: 'enabled',
@@ -22,7 +23,7 @@ const routerConfig: ExtraOptions = {
 };
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, ReportRolesComponent],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
