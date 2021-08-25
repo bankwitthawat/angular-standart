@@ -19,6 +19,8 @@ import { SharedModule } from 'app/shared/shared.module';
 import { TreeTableModule } from 'primeng/treetable';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatBadgeModule } from '@angular/material/badge';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+
 
 const PRIMENG_TABLE = [
   TableModule,
@@ -39,7 +41,8 @@ const MATERIAL = [
   MatExpansionModule,
   MatFormFieldModule,
   MatCheckboxModule,
-  MatBadgeModule
+  MatBadgeModule,
+  NgxExtendedPdfViewerModule
 ];
 @NgModule({
   declarations: [
