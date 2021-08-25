@@ -165,6 +165,17 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
         this.searchFrom.reset();
     }
 
+    onCreate(): void {
+        this._router.navigate(['/app-user/users', 'new']);
+    }
+
+    onView(params: any): void {
+        // console.log(params);
+        this._router.navigate(['/app-user/users', params]);
+    }
+
+    onDelete(): void {}
+
     getRoleListToDropDownList(): void {
         this._appUserService.getRoleListToDropDownList()
         .pipe(takeUntil(this._unsubscribeAll))

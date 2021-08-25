@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="flex items-center ml-6">
-                    <button class="fuse-mat-button-rounded hidden sm:inline-flex" mat-flat-button [color]="'primary'"
+                    <button class="fuse-mat-button-rounded hidden sm:inline-flex" mat-flat-button [color]="'primary'" (click)="onCreate()"
                         *ngIf="authorizeAccess?.isCreate">
                         <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:plus'"></mat-icon>
                         <span class="ml-2">Add User</span>
@@ -164,10 +164,10 @@
                                     (click)="onView(rowData.id)">
                                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
                                 </button>
-                                <button mat-icon-button [color]="'warn'" *ngIf="authorizeAccess?.isDelete"
+                                <!-- <button mat-icon-button [color]="'warn'" *ngIf="authorizeAccess?.isDelete"
                                     (click)="onDelete(rowData)">
                                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
-                                </button>
+                                </button> -->
                             </td>
                             <td style="width: 200px">
                                 {{rowData.username}}
