@@ -40,6 +40,7 @@
         "lodash-es": "4.17.21",
         "moment": "2.29.1",
         "ng-apexcharts": "^1.5.12",
+        "ngx-extended-pdf-viewer": "^10.0.0-alpha.8",
         "ngx-markdown": "12.0.1",
         "ngx-quill": "14.1.1",
         "ngx-spinner": "^12.0.0",

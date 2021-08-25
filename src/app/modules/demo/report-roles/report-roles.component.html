@@ -1,1 +1,101 @@
-<p>report-roles works!</p>
+<div class="flex flex-col flex-auto min-w-0">
+    <!-- Header -->
+    <div class="bg-card">
+        <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
+            <div class="flex  sm:items-center min-w-0 my-8 sm:my-12">
+
+                <div class="flex flex-auto items-center justify-between min-w-0">
+                    <div class="flex flex-col min-w-0 ml-4">
+                        <div
+                            class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate ng-star-inserted">
+                            Roles Report
+                        </div>
+
+                        <div class="flex items-center">
+                            <div class="ml-1.5 leading-6 truncate text-secondary">
+                                Demo report 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center ml-6">
+                  
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Body -->
+    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
+
+        <!-- Search Panel -->
+        <mat-expansion-panel multi
+            class="flex flex-col flex-auto w-full max-w-screen-xl mt-2 bg-card shadow rounded-2xl ">
+            <mat-expansion-panel-header [collapsedHeight]="'50px'">
+                <mat-panel-title>
+                    <div class="mr-4 text-lg font-bold tracking-tight leading-6 truncate">Filter</div>
+                </mat-panel-title>
+                <mat-panel-description>
+                    This is filter criteria the panel.
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-divider class="my-4"></mat-divider>
+            <div class="grid grid-cols-1 md:grid-cols-2 flex-wrap" [formGroup]="searchFrom">
+                <div class="flex flex-col m-2">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="name" (keyup.enter)="onSearch()"
+                            class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
+                            type="text" aria-label="Search" placeholder="" />
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col m-2">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Description</mat-label>
+                        <input matInput formControlName="description" (keyup.enter)="onSearch()"
+                            class="focus:border-light-blue-500 w-full text-md text-black placeholder-gray-500 border border-gray-200 rounded-md py-2"
+                            type="text" aria-label="Search" placeholder="" />
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <mat-divider class="my-4"></mat-divider>
+            <div class="grid grid-row lg:justify-end md:w-full">
+                <button class="fuse-mat-button-rounded w-full" mat-flat-button [color]="'primary'" (click)="onSearch()">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                    <span class="ml-2">View report</span>
+                </button>
+            </div>
+
+        </mat-expansion-panel>
+
+        <!-- Table -->
+        <div class="flex flex-col flex-auto w-full max-w-screen-xl mt-8 bg-card shadow rounded-2xl ">
+            
+            <div class="mx-6 mb-6 overflow-auto" style="min-height: 400px">
+                <ngx-extended-pdf-viewer [customToolbar]="myToolbar"
+                [base64Src]="base64String" useBrowserLocale="true" [height]="'90vh'"></ngx-extended-pdf-viewer>
+                <ng-template #myToolbar>
+                    <div class="header" style="background-color: #fff;">
+                        <button mat-icon-button id="zoomIn">
+                            <mat-icon>zoom_in</mat-icon>
+                        </button>
+                        <button mat-icon-button id="zoomOut">
+                            <mat-icon>zoom_out</mat-icon>
+                        </button>                     
+                        <button mat-icon-button id="print">
+                            <mat-icon>print</mat-icon>
+                        </button>
+                        <button mat-icon-button id="download">
+                            <mat-icon>download</mat-icon>
+                        </button>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+
+    </div>
+</div>
