@@ -18,9 +18,6 @@ import { appInitializer } from './app.initializer';
         //     useClass: AuthInterceptor,
         //     multi   : true
         // },
-        { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthenticationService] },
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     ]
 })
 export class AuthModule

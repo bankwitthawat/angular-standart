@@ -47,9 +47,9 @@
         <!-- Search Panel -->
         <mat-expansion-panel multi
             class="flex flex-col flex-auto w-full max-w-screen-xl mt-2 bg-card shadow rounded-2xl ">
-            <mat-expansion-panel-header [collapsedHeight]="'80px'">
+            <mat-expansion-panel-header [collapsedHeight]="'50px'">
                 <mat-panel-title>
-                    <div class="mr-4 text-lg font-medium tracking-tight leading-6 truncate">Search</div>
+                    <div class="mr-4 text-lg font-bold tracking-tight leading-6 truncate">Search</div>
                 </mat-panel-title>
                 <mat-panel-description>
                     This is the primary search of the panel.
@@ -95,7 +95,7 @@
 
             <div class="mx-6 mb-6 overflow-auto" style="min-height: 400px">
                 <p-table [columns]="roleCol" [value]="roleList?.items" [loading]="isLoading"
-                    styleClass="p-datatable-striped" [style]="{ width : '100%'}" responsiveLayout="scroll">
+                    styleClass="p-datatable-striped p-datatable-sm" [style]="{ width : '100%'}" responsiveLayout="scroll">
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th class="text-center" style="width: 150px"></th>

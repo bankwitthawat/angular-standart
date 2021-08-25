@@ -81,22 +81,24 @@ export class AuthSignInComponent implements OnInit
             .pipe(first())
             .subscribe({
                 next: (data) => {
+                    // console.log(data);
                     this.signInForm.enable();
                     this.showAlert = true;
 
                     if (data.success) {
                         this.alert = { type: 'success', message: data.message };
-                        setTimeout(() => this.router.navigate([this.returnUrl]), 1500);
+                        setTimeout(() => this.router.navigate([this.returnUrl]), 1000);
+                    }else {
+                        this.alert = { type: 'error', message: data.message };
                     }
 
                 },
                 error: (error) => {
-                    console.log(error);
+                    console.log('signIn',error);
                     this.signInForm.enable();
                     this.showAlert = true;
                     this.alert = {
                         type: 'error',
-                        // message: error.status == 401 ? error : 'Service unavailable.'
                         message: error
                     };
                 }

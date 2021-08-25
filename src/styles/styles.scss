@@ -8,3 +8,8 @@ body .p-component
 {
   font-size: 14px;
 }
+
+/* mat-form-field / matInput - readonly support */
+::ng-deep .mat-form-field-appearance-legacy.mat-form-field-readonly .mat-form-field-underline {
+  background-color: rgba(127, 127, 127, 0.25);
+}
