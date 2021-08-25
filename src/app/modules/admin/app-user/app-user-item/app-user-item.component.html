@@ -1,1 +1,47 @@
-<p>app-user-item works!</p>
+<div class="flex flex-col flex-auto w-full">
+    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
+        <!-- Title and action buttons -->
+        <div class="flex items-center justify-between w-full">
+            <div>
+                <div class="text-3xl font-semibold tracking-tight leading-8">{{ pageTitle }}</div>
+                <div class="font-medium tracking-tight text-secondary">{{ pageSubTitle }}</div>
+            </div>
+            <div class="flex items-center ml-6">
+                <button class="hidden sm:inline-flex" mat-stroked-button (click)="onBack()">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:reply'"></mat-icon>
+                    <span class="ml-2">Back</span>
+                </button>
+                <button class="hidden sm:inline-flex ml-3" mat-flat-button [color]="'primary'"
+                    *ngIf="authorizeAccess.pageMode === 'CREATE' ? authorizeAccess.isCreate : authorizeAccess.isEdit"
+                    (click)="onSaveAndExit(true);" [disabled]="isLoading">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                    <span class="ml-2">Save & Exit</span>
+                </button>
+                <button class="hidden sm:inline-flex ml-3" mat-flat-button [color]="'primary'"
+                    *ngIf="authorizeAccess.pageMode === 'CREATE' ? authorizeAccess.isCreate : authorizeAccess.isEdit"
+                    (click)="onSaveAndExit(false);" [disabled]="isLoading">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                    <span class="ml-2">Save</span>
+                </button>
+
+                <!-- Actions menu (visible on xs) -->
+                <div class="sm:hidden">
+                    <button [matMenuTriggerFor]="actionsMenu" mat-icon-button>
+                        <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
+                    </button>
+                    <mat-menu #actionsMenu="matMenu">
+                        <button mat-menu-item (click)="onSaveAndExit(false);" [disabled]="isLoading"
+                            *ngIf="authorizeAccess.pageMode === 'CREATE' ? authorizeAccess.isCreate : authorizeAccess.isEdit">Save</button>
+                        <button mat-menu-item (click)="onSaveAndExit(true);" [disabled]="isLoading"
+                            *ngIf="authorizeAccess.pageMode === 'CREATE' ? authorizeAccess.isCreate : authorizeAccess.isEdit">Save
+                            & Exit</button>
+                        <button mat-menu-item>Back</button>
+                    </mat-menu>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
