@@ -33,10 +33,10 @@ export class AppRoleService {
     }
 
     updateRole(data: any): Observable<any> {
-        return this._http.post<any>(`${environment.baseUrl}/api/approle/update-role`, data);
+        return this._http.put<any>(`${environment.baseUrl}/api/approle/update-role`, data);
     }
 
     deleteRole(id: any): Observable<any> {
-        return this._http.post<any>(`${environment.baseUrl}/api/approle/delete-role`, { id: id });
+        return this._http.delete<any>(`${environment.baseUrl}/api/approle/delete-role?id=${id}`);
     }
 }
