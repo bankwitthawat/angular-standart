@@ -14,6 +14,9 @@ export function appInitializer(authenticationService: AuthenticationService) {
                     } else {
                         return res;
                     }
+                },
+                (err) => {
+                     authenticationService.signOut();
                 }
             ).add(resolve);
         });

@@ -89,7 +89,7 @@ export class AppUserItemViewComponent implements OnInit, OnDestroy {
      * @param id
      */
     getPanelInfo(id: string): any {
-        return this.panels.find((panel) => panel.id === id);
+        return this.panels.find(panel => panel.id === id);
     }
 
     /**

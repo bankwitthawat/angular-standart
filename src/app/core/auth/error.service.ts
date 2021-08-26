@@ -19,10 +19,10 @@ export class HandleErrorService {
             // The backend returned an unsuccessful response code.
             switch (err.status) {
                 case 400:
-                    errorMessage = err.error.message || `${err.status}: Bad Request.`;
+                    errorMessage = err?.error?.message || `${err.status}: Bad Request.`;
                     break;
                 case 401:
-                    errorMessage = err.error.message || `${err.status}: You are un authorized to do this action.`;
+                    errorMessage = err?.error?.message || `${err.status}: You are un authorized to do this action.`;
                     break;
                 case 403:
                     errorMessage = `${err.status}: You don't have permission to access the requested resource.`;
