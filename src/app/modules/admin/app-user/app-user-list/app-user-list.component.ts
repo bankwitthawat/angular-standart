@@ -100,10 +100,10 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
      */
     initialForm(): void {
         this.searchFrom = this._fb.group({
-            username: [''],
-            fullName: [''],
-            role: [''],
-            isActive: [''],
+            username: [null],
+            fullName: [null],
+            role: [null],
+            isActive: [null],
         });
 
         this.getRoleListToDropDownList();
@@ -151,15 +151,23 @@ export class AppUserListViewComponent implements OnInit, OnDestroy {
     }
 
     onSearch(): void {
+        const isActive =
+            this.form.isActive.value === 'true'
+                ? true
+                : this.form.isActive.value === 'false'
+                ? false
+                : null;
         this.userSearch = {
             criteria: {
                 username: this.form.username.value,
                 fullName: this.form.fullName.value,
-                roleId: this.form.role.value,
-                isActive: this.form.isActive.value,
+                roleId: this.form.role.value || null,
+                isActive: isActive,
             },
             gridCriteria: null,
         };
+
+        console.log(this.userSearch);
 
         this.gridBindings();
         this.setSearchDefualt();

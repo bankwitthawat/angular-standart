@@ -1,4 +1,8 @@
-import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import {
+    APP_INITIALIZER,
+    CUSTOM_ELEMENTS_SCHEMA,
+    NgModule,
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExtraOptions, PreloadAllModules, RouterModule } from '@angular/router';
@@ -20,12 +24,13 @@ import { appInitializer } from './core/auth/app.initializer';
 import { ErrorInterceptor } from './core/auth/error.interceptor';
 import { JwtInterceptor } from './core/auth/jwt.interceptor';
 import { AuthenticationService } from './shared/services/authentication.service';
-
+import { MAT_DATE_FORMATS } from '@angular/material/core';
 
 const routerConfig: ExtraOptions = {
     scrollPositionRestoration: 'enabled',
     preloadingStrategy: PreloadAllModules,
 };
+
 
 @NgModule({
     declarations: [AppComponent],
@@ -50,14 +55,19 @@ const routerConfig: ExtraOptions = {
 
         NgxSpinnerModule,
         ToastModule,
-
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [
         MessageService,
-        { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthenticationService] },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: appInitializer,
+            multi: true,
+            deps: [AuthenticationService],
+        },
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
     ],
     bootstrap: [AppComponent],
 })

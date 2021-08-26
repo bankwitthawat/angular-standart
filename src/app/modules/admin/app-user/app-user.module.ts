@@ -27,6 +27,9 @@ import { AppUserItemViewSettingsComponent } from './app-user-item/app-user-item-
 import { AppUserCreateComponent } from './components/app-user-create/app-user-create.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
 
 const PRIMENG_TABLE = [
   TableModule,
@@ -51,8 +54,21 @@ const MATERIAL = [
   MatAutocompleteModule,
   MatSelectModule,
   MatSlideToggleModule,
-  MatDialogModule
+  MatDialogModule,
+  MatDatepickerModule, MatNativeDateModule, MatMomentDateModule,
 ];
+
+const MY_DATE_FORMATS = {
+  parse: {
+      dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+      dateInput: 'DD/MM/YYYY',
+      monthYearLabel: 'MMMM YYYY',
+      dateA11yLabel: 'LL',
+      monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 
 @NgModule({
@@ -68,6 +84,9 @@ const MATERIAL = [
     AppUserRoutingModule,
     ...MATERIAL,
     ...PRIMENG_TABLE
+  ],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
   ]
 })
 export class AppUserModule { }

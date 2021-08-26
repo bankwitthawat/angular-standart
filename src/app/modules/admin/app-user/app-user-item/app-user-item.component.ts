@@ -184,5 +184,4 @@ export class AppUserItemViewComponent implements OnInit, OnDestroy {
      */
     initialData(): void {}
 
-   
 }

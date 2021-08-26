@@ -1,7 +1,7 @@
 <div class="flex flex-col flex-auto w-full">
     <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
         <!-- Title and action buttons -->
-        <div class="flex items-center justify-between w-full">
+        <div class="flex items-center justify-between w-full max-w-3xl">
             <div>
                 <div class="text-3xl font-semibold tracking-tight leading-8">{{ pageTitle }}</div>
                 <div class="font-medium tracking-tight text-secondary">{{ pageSubTitle }}</div>
@@ -11,18 +11,21 @@
                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:reply'"></mat-icon>
                     <span class="ml-2">Back</span>
                 </button>
-                <button class="hidden sm:inline-flex ml-3" mat-flat-button [color]="'primary'"
-                    *ngIf="authorizeAccess.pageMode === 'CREATE' ? authorizeAccess.isCreate : authorizeAccess.isEdit"
-                    (click)="onSaveAndExit(true);" [disabled]="isLoading">
+                <button class="hidden sm:inline-flex ml-3" mat-flat-button [color]="'warn'" (click)="unlockUser();"
+                    *ngIf="authorizeAccess.isEdit && isUnlockUser" [disabled]="isLoading">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:lock-open'"></mat-icon>
+                    <span class="ml-2">Unlock</span>
+                </button>
+                <!-- <button class="hidden sm:inline-flex ml-3" mat-flat-button [color]="'primary'"
+                    *ngIf="authorizeAccess.isEdit" (click)="onSaveAndExit(true);" [disabled]="isLoading">
                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
                     <span class="ml-2">Save & Exit</span>
                 </button>
                 <button class="hidden sm:inline-flex ml-3" mat-flat-button [color]="'primary'"
-                    *ngIf="authorizeAccess.pageMode === 'CREATE' ? authorizeAccess.isCreate : authorizeAccess.isEdit"
-                    (click)="onSaveAndExit(false);" [disabled]="isLoading">
+                    *ngIf="authorizeAccess.isEdit" (click)="onSaveAndExit(false);" [disabled]="isLoading">
                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
                     <span class="ml-2">Save</span>
-                </button>
+                </button> -->
 
                 <!-- Actions menu (visible on xs) -->
                 <div class="sm:hidden">
@@ -30,18 +33,150 @@
                         <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
                     </button>
                     <mat-menu #actionsMenu="matMenu">
-                        <button mat-menu-item (click)="onSaveAndExit(false);" [disabled]="isLoading"
-                            *ngIf="authorizeAccess.pageMode === 'CREATE' ? authorizeAccess.isCreate : authorizeAccess.isEdit">Save</button>
+                        <!-- <button mat-menu-item (click)="onSaveAndExit(false);" [disabled]="isLoading"
+                            *ngIf="authorizeAccess.isEdit">Save</button>
                         <button mat-menu-item (click)="onSaveAndExit(true);" [disabled]="isLoading"
-                            *ngIf="authorizeAccess.pageMode === 'CREATE' ? authorizeAccess.isCreate : authorizeAccess.isEdit">Save
-                            & Exit</button>
-                        <button mat-menu-item>Back</button>
+                            *ngIf="authorizeAccess.isEdit">Save
+                            & Exit</button> -->
+                        <button mat-menu-item (click)="onBack()">Back</button>
+                        <button mat-menu-item (click)="unlockUser();"
+                            *ngIf="authorizeAccess.isEdit && isUnlockUser">
+                            Unlock
+                        </button>
                     </mat-menu>
                 </div>
             </div>
         </div>
 
+        <div class="w-full max-w-3xl">
+            <form [formGroup]="userForm">
+                <div class="grid sm:grid-cols-4 gap-4 w-full mt-8">
+                    <!-- Username -->
+                    <div class="sm:col-span-4">
+                        <mat-form-field class="w-full">
+                            <mat-label>Username<span style="color:red;">*</span></mat-label>
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user'" matPrefix></mat-icon>
+                            <input formControlName="username" matInput>
+                            <mat-error *ngIf="userForm.get('username').hasError('required')">
+                                Username is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!-- Role -->
+                    <div class="sm:col-span-4">
+                        <mat-form-field class="w-full">
+                            <mat-label>Role<span style="color:red;">*</span></mat-label>
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user'" matPrefix></mat-icon>
+                            <mat-select placeholder="Choose an option" formControlName="roleId">
+                                <!-- <mat-option>None</mat-option> -->
+                                <mat-option *ngFor="let option of rolesOptions" [value]="option.id">
+                                    {{option.label}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="userForm.get('roleId').hasError('required')">
+                                Role is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!-- Force Change Password -->
+                    <div class="sm:col-span-4">
+                        <div class="flex flex-col">
+                            <span class="font-medium mb-2">Force Change Password</span>
+                            <mat-slide-toggle [color]="'primary'" formControlName="isForceChangePwd">
+                                {{form.isForceChangePwd.value ? 'Yes': 'No'}}
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                    <!-- Enable -->
+                    <div class="sm:col-span-4">
+                        <div class="flex flex-col gt-sm:mt-0 gt-sm:ml-16">
+                            <span class="font-medium mb-2">Enable</span>
+                            <mat-slide-toggle [color]="'primary'" formControlName="isActive">
+                                {{ form.isActive.value ? 'Active' : 'Inactive'}}
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
 
+                </div>
 
+                <!-- Divider -->
+                <div class="my-10 border-t"></div>
+
+                <!-- Section -->
+                <div class="w-full">
+                    <div class="text-xl">Personal Information</div>
+                    <div class="text-secondary">Communication details in case we want to connect with you. These will be
+                        kept private.</div>
+                </div>
+
+                <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+                    <!-- FName -->
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>First Name</mat-label>
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user'" matPrefix></mat-icon>
+                            <input formControlName="fName" matInput>
+                        </mat-form-field>
+                    </div>
+                    <!-- LName -->
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Last Name</mat-label>
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user'" matPrefix></mat-icon>
+                            <input formControlName="lName" matInput>
+                        </mat-form-field>
+                    </div>
+                    <!-- Email -->
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Email</mat-label>
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:mail'" matPrefix></mat-icon>
+                            <input formControlName="email" matInput>
+                        </mat-form-field>
+                    </div>
+                    <!-- Phone -->
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Mobile Phone</mat-label>
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:phone'" matPrefix></mat-icon>
+                            <input formControlName="mobilePhone" matInput>
+                        </mat-form-field>
+                    </div>
+                    <!-- Birth Date -->
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Birth Date</mat-label>
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:gift'" matPrefix>
+                            </mat-icon>
+                            <input matInput [matDatepicker]="pickerBirthDate" formControlName="birthDate">
+                            <mat-datepicker-toggle matSuffix [for]="pickerBirthDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerBirthDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+                <!-- Divider -->
+                <div class="mt-11 mb-10 border-t"></div>
+
+                <!-- Actions -->
+                <div class="flex items-center justify-end">
+                    <button mat-stroked-button type="button" (click)="onBack()">
+                        Cancel
+                    </button>
+                    <button class="ml-4" mat-flat-button type="button" [color]="'primary'"
+                        *ngIf="authorizeAccess.isEdit" (click)="onSaveAndExit(true);">
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                        <span class="ml-2">Save & Exit</span>
+                    </button>
+                    <button class="ml-4" mat-flat-button type="button" [color]="'primary'"
+                        *ngIf="authorizeAccess.isEdit" (click)="onSaveAndExit(true);">
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                        <span class="ml-2">Save</span>
+                    </button>
+                </div>
+
+            </form>
+        </div>
     </div>
 </div>

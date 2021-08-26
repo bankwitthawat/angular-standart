@@ -9,11 +9,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MyErrorStateMatcher } from 'app/modules/admin/app-role/app-role-item/app-role-item.component';
 import { AccessAuthorize } from 'app/shared/constants/accessAuthorize';
+import { OptionItems } from 'app/shared/models/common/optionsView';
 import { AuthorizeService } from 'app/shared/services/authorize.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AppUserService } from '../../app-user.service';
+import * as dayjs from 'dayjs';
+import { AppUserItemView } from 'app/shared/models/viewModels/appUserView';
 
 @Component({
     selector: 'app-user-item-setting',
@@ -31,8 +35,11 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
     isLoading: boolean = false;
     submitted: boolean = false;
 
+    isUnlockUser: boolean = false;
+    rolesOptions: OptionItems[] = [];
     userForm: FormGroup;
     matcher = new MyErrorStateMatcher();
+    userData: AppUserItemView;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -66,33 +73,13 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
 
     setAuthorizeOptions(): void {
         this.authorizeAccess = this._authorizeSerive.setAccess(this.moduleName);
-        this.authorizeAccess.pageMode = +this.id ? 'VIEW' : 'CREATE';
+        this.authorizeAccess.pageMode = 'VIEW';
         console.log('this.authorizeAccess', this.authorizeAccess);
 
-        if (this.authorizeAccess.isAccess === false) {
-            this._messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Access Denied.',
-            });
-            this._router.navigate(['./'], { relativeTo: this._route.parent });
-        }
-
         if (
-            this.authorizeAccess.pageMode === 'CREATE' &&
-            this.authorizeAccess.isCreate === false
-        ) {
-            this._messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Access Denied.',
-            });
-            this._router.navigate(['./'], { relativeTo: this._route.parent });
-        }
-
-        if (
-            this.authorizeAccess.pageMode === 'VIEW' &&
-            this.authorizeAccess.isView === false
+            this.authorizeAccess.isAccess === false ||
+            this.authorizeAccess.isEdit === false ||
+            !+this.id
         ) {
             this._messageService.add({
                 severity: 'error',
@@ -104,29 +91,110 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
     }
 
     initialPage(): void {
-        if (+this.id) {
-            this.pageTitle = 'Manage User';
-            this.pageSubTitle = 'User Management, User review and manage';
-        } else {
-            this.pageTitle = 'Create New User';
-            this.pageSubTitle = 'User Management, Create a new user';
-        }
+        this.pageTitle = 'Manage User';
+        this.pageSubTitle = 'User Management, User review and manage';
 
         this.userForm = this._fb.group({
-            name: [null, [Validators.required]],
-            description: [null],
+            username: [{ value: null, disabled: true }, [Validators.required]],
+            roleId: [null, [Validators.required]],
+            isForceChangePwd: [true],
+            isActive: [true],
+            email: [null],
+            fName: [null],
+            lName: [null],
+            mobilePhone: [null],
+            birthDate: [null],
         });
     }
 
     /**
      * Prepare data
      */
-    initialData(): void {}
+    initialData(): void {
+        this.getRoleListToDropDownList();
+        this.getUserById();
+    }
 
     /**
      * View Fuctions
      */
     onBack(): void {
         this._router.navigate(['/app-user/users']);
+    }
+
+    onSaveAndExit(): void {
+        // if (this.userForm.invalid) {
+        //     this.userForm.markAllAsTouched();
+        //     return;
+        // }
+
+        const result = {
+            username: this.form.username.value,
+            roleId: this.form.roleId.value,
+            isForceChangePwd: this.form.isForceChangePwd.value,
+            isActive: this.form.isActive.value,
+            email: this.form.email.value,
+            fName: this.form.fName.value,
+            lName: this.form.lName.value,
+            mobilePhone: this.form.mobilePhone.value,
+            birthDate: this.form.birthDate.value
+                ? dayjs(this.form.birthDate.value).format('DD/MM/YYYY')
+                : null,
+        };
+
+        console.log(result);
+    }
+
+    getUserById(): void {
+        this._appUserService
+            .getUserById(+this.id)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((response: any) => {
+                this.userData = response.data;
+                this.userForm.patchValue(this.userData);
+                if (this.userData.loginAttemptCount) {
+                    this.isUnlockUser = true;
+                }
+            });
+    }
+
+    getRoleListToDropDownList(): void {
+        this._appUserService
+            .getRoleListToDropDownList()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((response: any) => {
+                this.rolesOptions = response.data;
+            });
+    }
+
+    unlockUser(): void {
+        this._spinner.show();
+        this.isLoading = true;
+
+        this._appUserService
+            .unlockUser(+this.id)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(
+                (response: any) => {
+                    this._spinner.hide();
+                    this.isLoading = false;
+                    this.isUnlockUser = false;
+
+                    if (response.success) {
+                        this._messageService.add({
+                            severity: 'success',
+                            summary: 'Success',
+                            detail: response.message,
+                        });
+
+                        this.ngOnInit();
+                    }
+                },
+                (error) => {
+                    this._spinner.hide();
+                    this.isLoading = false;
+                    this.isUnlockUser = false;
+                }
+            );
     }
 }

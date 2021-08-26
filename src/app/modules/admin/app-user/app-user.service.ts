@@ -16,6 +16,18 @@ export class AppUserService {
         );
     }
 
+    unlockUser(id: number): Observable<any> {
+        return this._http.put<any>(`${environment.baseUrl}/api/appuser/unlock`, {
+            id: id,
+        });
+    }
+
+    getUserById(id: number): Observable<any> {
+        return this._http.get<any>(
+            `${environment.baseUrl}/api/appuser/getuserbyid?id=${id}`
+        );
+    }
+
     getUserList(search: any): Observable<any> {
         return this._http.post<any>(
             `${environment.baseUrl}/api/appuser/list`,
