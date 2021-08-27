@@ -115,9 +115,6 @@ export class AppUserItemChangepwdComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this._spinner.show();
-        this.isLoading = true;
-
         const result = {
             id: +this.id,
             password: this.form.password.value,
@@ -127,31 +124,56 @@ export class AppUserItemChangepwdComponent implements OnInit, OnDestroy {
 
         console.log(result);
 
-        this._appUserService.changePassword(result).subscribe(
-            (response) => {
-                this._spinner.hide();
-                this.isLoading = false;
+        // Set template
+        const config = {
+            title: 'Change password ?',
+            message:
+                'Are you sure you want to change password for this user permanently?',
+        };
 
-                if (response.success) {
-                    this._messageService.add({
-                        severity: 'success',
-                        summary: 'Success',
-                        detail: response.message,
-                    });
-                    this.passwordForm.reset();
+        // Get template
+        const template = this._fuseConfirmationService.removeTemplate(config);
 
-                    if (isExit) {
-                        this._router.navigate(['..'], {
-                            relativeTo: this._route,
-                        });
-                    }
-                }
-            },
-            (error) => {
-                this._spinner.hide();
-                this.isLoading = false;
+        // Open the confirmation and save the reference
+        const dialogRef = this._fuseConfirmationService.open(template);
+
+        dialogRef.beforeClosed().subscribe((res) => {
+            if (res === 'confirmed') {
+                this._spinner.show();
+                this.isLoading = true;
             }
-        );
+        });
+
+        // Subscribe to afterClosed from the dialog reference
+        dialogRef.afterClosed().subscribe((res) => {
+            if (res === 'confirmed') {
+                this._appUserService.changePassword(result).subscribe(
+                    (response) => {
+                        this._spinner.hide();
+                        this.isLoading = false;
+
+                        if (response.success) {
+                            this._messageService.add({
+                                severity: 'success',
+                                summary: 'Success',
+                                detail: response.message,
+                            });
+                            this.passwordForm.reset();
+
+                            if (isExit) {
+                                this._router.navigate(['..'], {
+                                    relativeTo: this._route,
+                                });
+                            }
+                        }
+                    },
+                    (error) => {
+                        this._spinner.hide();
+                        this.isLoading = false;
+                    }
+                );
+            }
+        });
     }
 
     onBack(): void {

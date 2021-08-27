@@ -39,7 +39,7 @@
                         <mat-form-field class="w-full">
                             <mat-label>New password</mat-label>
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
-                            <input type="password" matInput formControlName="password" />
+                            <input type="password" matInput formControlName="password" trim />
                             <mat-error *ngIf="passwordForm.get('password').hasError('required')">
                                 Password is <strong>required</strong>
                             </mat-error>
@@ -50,7 +50,7 @@
                         <mat-form-field class="w-full">
                             <mat-label>Confirm new password</mat-label>
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
-                            <input type="password" matInput formControlName="passwordConfirm" >
+                            <input type="password" matInput formControlName="passwordConfirm" trim />
                             <mat-error *ngIf="passwordForm.get('passwordConfirm').hasError('required')">
                                 Password is <strong>required</strong>
                             </mat-error>
