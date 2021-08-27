@@ -1,57 +1,100 @@
-<div class="w-full max-w-3xl">
-    <!-- Form -->
-    <form>
-         <!-- Section -->
-         <div class="w-full">
-            <div class="text-secondary">You can only change your password twice within 24 hours!</div>
-        </div>
-        <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
-            <!-- Current password -->
-            <div class="sm:col-span-4">
-                <mat-form-field class="fuse-mat-no-subscript w-full">
-                    <mat-label>Current password</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:key'"
-                        matPrefix></mat-icon>
-                    <input
-                        type="password"
-                        matInput>
-                </mat-form-field>
+<div class="flex flex-col flex-auto w-full">
+    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
+        <!-- Title and action buttons -->
+        <div class="flex items-center justify-between w-full max-w-3xl">
+            <div>
+                <div class="text-3xl font-semibold tracking-tight leading-8">Change Password</div>
+                <div class="font-medium tracking-tight text-secondary">You can only change your password for user.</div>
             </div>
-            <!-- New password -->
-            <div class="sm:col-span-4">
-                <mat-form-field class="fuse-mat-no-subscript w-full">
-                    <mat-label>New password</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:key'"
-                        matPrefix></mat-icon>
-                    <input
-                        type="password"
-                        matInput>
-                </mat-form-field>
-                <div class="mt-1 text-md text-hint">Minimum 8 characters. Must include numbers, letters and special characters.</div>
+            <div class="flex items-center ml-6">
+                <button class="hidden sm:inline-flex" mat-stroked-button (click)="onBack()">
+                    <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:reply'"></mat-icon>
+                    <span class="ml-2">Back</span>
+                </button>
+
+                <!-- Actions menu (visible on xs) -->
+                <div class="sm:hidden">
+                    <button [matMenuTriggerFor]="actionsMenu" mat-icon-button>
+                        <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
+                    </button>
+                    <mat-menu #actionsMenu="matMenu">
+                        <button mat-menu-item (click)="onSaveAndExit(false);" [disabled]="isLoading"
+                            *ngIf="authorizeAccess.isEdit">Save</button>
+                        <button mat-menu-item (click)="onSaveAndExit(true);" [disabled]="isLoading"
+                            *ngIf="authorizeAccess.isEdit">Save
+                            & Exit</button>
+                        <button mat-menu-item (click)="onBack()">Back</button>
+
+                    </mat-menu>
+                </div>
             </div>
         </div>
 
-        <!-- Divider -->
-        <div class="my-10 border-t"></div>
+        <div class="w-full max-w-3xl">
+            <!-- Form -->
+            <form [formGroup]="passwordForm">
+                <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+                    <!-- New password -->
+                    <div class="sm:col-span-4">
+                        <mat-form-field class="w-full">
+                            <mat-label>New password</mat-label>
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
+                            <input type="password" matInput formControlName="password" />
+                            <mat-error *ngIf="passwordForm.get('password').hasError('required')">
+                                Password is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!-- New password -->
+                    <div class="sm:col-span-4">
+                        <mat-form-field class="w-full">
+                            <mat-label>Confirm new password</mat-label>
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
+                            <input type="password" matInput formControlName="passwordConfirm" >
+                            <mat-error *ngIf="passwordForm.get('passwordConfirm').hasError('required')">
+                                Password is <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="passwordForm.get('passwordConfirm').hasError('mustMatch')">
+                                Passwords must match
+                            </mat-error>
+                        </mat-form-field>
+                        <!-- <div class="mt-1 text-md text-hint">Minimum 8 characters. Must include numbers, letters and
+                            special characters.</div> -->
+                    </div>
+                     <!-- Force Change Password -->
+                     <div class="sm:col-span-4">
+                        <div class="flex flex-col">
+                            <span class="font-medium mb-2">Force Change Password</span>
+                            <mat-slide-toggle [color]="'primary'" formControlName="isForceChangePwd">
+                                {{form.isForceChangePwd.value ? 'Yes': 'No'}}
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
 
-         <!-- Actions -->
-         <div class="flex items-center justify-end">
-            <button
-                mat-stroked-button
-                type="button">
-                Cancel
-            </button>
-            <button
-                class="ml-4"
-                mat-flat-button
-                type="button"
-                [color]="'primary'">Save
-            </button>
+                <!-- Divider -->
+                <div class="my-10 border-t"></div>
+
+                <!-- Actions -->
+                <div class="flex flex-col sm:flex-row sm:flex-rowitems-center sm:flex-row-reverse">
+                    <button class="w-full sm:w-max sm:ml-4" mat-flat-button type="button" [color]="'primary'"
+                        *ngIf="authorizeAccess.isEdit" (click)="onSaveAndExit(false);">
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                        <span class="ml-2">Save</span>
+                    </button>
+
+                    <button class="w-full sm:w-max mt-4 sm:m-0 sm:ml-4" mat-flat-button type="button" [color]="'primary'"
+                        *ngIf="authorizeAccess.isEdit" (click)="onSaveAndExit(true);">
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                        <span class="ml-2">Save & Exit</span>
+                    </button>
+                    <button mat-stroked-button type="button" class=" mt-4 sm:m-0 sm:ml-4 w-full sm:w-max " (click)="onBack()">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+
         </div>
-    </form>
 
+    </div>
 </div>

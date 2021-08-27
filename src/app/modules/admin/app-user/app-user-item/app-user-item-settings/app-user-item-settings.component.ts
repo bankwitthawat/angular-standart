@@ -48,6 +48,9 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
         return this.userForm.controls;
     }
 
+    /**
+     * Constructor
+     */
     constructor(
         private _router: Router,
         private _route: ActivatedRoute,
@@ -61,6 +64,13 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
         this.id = this._route.snapshot.paramMap.get('id');
     }
 
+    // -----------------------------------------------------------------------------------------------------
+    // @ Lifecycle hooks
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * On init
+     */
     ngOnInit(): void {
         this.setAuthorizeOptions();
         this.initialPage();
@@ -73,6 +83,13 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
         this._unsubscribeAll.complete();
     }
 
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Page Authorize
+     */
     setAuthorizeOptions(): void {
         this.authorizeAccess = this._authorizeSerive.setAccess(this.moduleName);
         this.authorizeAccess.pageMode = 'VIEW';
@@ -149,7 +166,7 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
                 : null,
         };
 
-        console.log(result);
+        // console.log(result);
 
         this._appUserService.updateUser(result).subscribe(
             (response) => {
@@ -157,7 +174,11 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
                 this.isLoading = false;
 
                 if (response.success) {
-                    this._messageService.add({severity:'success', summary: 'Success', detail: response.message});
+                    this._messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: response.message,
+                    });
 
                     if (isExit) {
                         this._router.navigate(['..'], {
@@ -182,7 +203,6 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(
                 (response: any) => {
-
                     if (response && response.data) {
                         this.userData = response.data;
                         this.userForm.patchValue(this.userData);
