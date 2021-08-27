@@ -30,6 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
+import { NgxTrimDirectiveModule } from 'ngx-trim-directive';
 
 const PRIMENG_TABLE = [
   TableModule,
@@ -70,6 +71,10 @@ const MY_DATE_FORMATS = {
   },
 };
 
+const DIRECTIVE = [
+  NgxTrimDirectiveModule
+];
+
 
 @NgModule({
   declarations: [
@@ -83,7 +88,8 @@ const MY_DATE_FORMATS = {
     SharedModule,
     AppUserRoutingModule,
     ...MATERIAL,
-    ...PRIMENG_TABLE
+    ...PRIMENG_TABLE,
+    ...DIRECTIVE
   ],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },

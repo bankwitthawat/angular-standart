@@ -16,6 +16,10 @@ export class AppUserService {
         );
     }
 
+    updateUser(user: any): Observable<any> {
+        return this._http.put<any>(`${environment.baseUrl}/api/appuser/update-user`, user);
+    }
+
     unlockUser(id: number): Observable<any> {
         return this._http.put<any>(`${environment.baseUrl}/api/appuser/unlock`, {
             id: id,

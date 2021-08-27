@@ -101,7 +101,7 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
             roleId: [null, [Validators.required]],
             isForceChangePwd: [true],
             isActive: [true],
-            email: [null],
+            email: [null, [Validators.email]],
             fName: [null],
             lName: [null],
             mobilePhone: [null],
@@ -125,13 +125,17 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
         this._router.navigate(['/app-user/users']);
     }
 
-    onSaveAndExit(): void {
-        // if (this.userForm.invalid) {
-        //     this.userForm.markAllAsTouched();
-        //     return;
-        // }
+    onSaveAndExit(isExit: boolean): void {
+        if (this.userForm.invalid) {
+            this.userForm.markAllAsTouched();
+            return;
+        }
+
+        this._spinner.show();
+        this.isLoading = true;
 
         const result = {
+            id: +this.id,
             username: this.form.username.value,
             roleId: this.form.roleId.value,
             isForceChangePwd: this.form.isForceChangePwd.value,
@@ -146,6 +150,27 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
         };
 
         console.log(result);
+
+        this._appUserService.updateUser(result).subscribe(
+            (response) => {
+                this._spinner.hide();
+                this.isLoading = false;
+
+                if (response.success) {
+                    this._messageService.add({severity:'success', summary: 'Success', detail: response.message});
+
+                    if (isExit) {
+                        this._router.navigate(['..'], {
+                            relativeTo: this._route,
+                        });
+                    }
+                }
+            },
+            (error) => {
+                this._spinner.hide();
+                this.isLoading = false;
+            }
+        );
     }
 
     getUserById(): void {

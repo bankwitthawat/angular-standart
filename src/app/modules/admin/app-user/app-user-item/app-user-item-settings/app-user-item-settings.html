@@ -115,7 +115,7 @@
                         <mat-form-field class="fuse-mat-no-subscript w-full">
                             <mat-label>First Name</mat-label>
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user'" matPrefix></mat-icon>
-                            <input formControlName="fName" matInput>
+                            <input formControlName="fName" matInput trim="blur">
                         </mat-form-field>
                     </div>
                     <!-- LName -->
@@ -123,7 +123,7 @@
                         <mat-form-field class="fuse-mat-no-subscript w-full">
                             <mat-label>Last Name</mat-label>
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user'" matPrefix></mat-icon>
-                            <input formControlName="lName" matInput>
+                            <input formControlName="lName" matInput trim="blur">
                         </mat-form-field>
                     </div>
                     <!-- Email -->
@@ -131,7 +131,7 @@
                         <mat-form-field class="fuse-mat-no-subscript w-full">
                             <mat-label>Email</mat-label>
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:mail'" matPrefix></mat-icon>
-                            <input formControlName="email" matInput>
+                            <input formControlName="email" matInput trim="blur">
                         </mat-form-field>
                     </div>
                     <!-- Phone -->
@@ -139,7 +139,7 @@
                         <mat-form-field class="fuse-mat-no-subscript w-full">
                             <mat-label>Mobile Phone</mat-label>
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:phone'" matPrefix></mat-icon>
-                            <input formControlName="mobilePhone" matInput>
+                            <input formControlName="mobilePhone" matInput trim="blur">
                         </mat-form-field>
                     </div>
                     <!-- Birth Date -->
@@ -148,7 +148,7 @@
                             <mat-label>Birth Date</mat-label>
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:gift'" matPrefix>
                             </mat-icon>
-                            <input matInput [matDatepicker]="pickerBirthDate" formControlName="birthDate">
+                            <input matInput [matDatepicker]="pickerBirthDate" formControlName="birthDate" trim="blur">
                             <mat-datepicker-toggle matSuffix [for]="pickerBirthDate"></mat-datepicker-toggle>
                             <mat-datepicker #pickerBirthDate></mat-datepicker>
                         </mat-form-field>
@@ -170,7 +170,7 @@
                         <span class="ml-2">Save & Exit</span>
                     </button>
                     <button class="ml-4" mat-flat-button type="button" [color]="'primary'"
-                        *ngIf="authorizeAccess.isEdit" (click)="onSaveAndExit(true);">
+                        *ngIf="authorizeAccess.isEdit" (click)="onSaveAndExit(false);">
                         <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
                         <span class="ml-2">Save</span>
                     </button>
