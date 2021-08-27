@@ -11,7 +11,7 @@
                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:reply'"></mat-icon>
                     <span class="ml-2">Back</span>
                 </button>
-                <button class="hidden sm:inline-flex ml-3" mat-flat-button [color]="'warn'" (click)="unlockUser();"
+                <button class="hidden sm:inline-flex ml-3" mat-flat-button color="warning" (click)="unlockUser();"
                     *ngIf="authorizeAccess.isEdit && isUnlockUser" [disabled]="isLoading">
                     <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:lock-open'"></mat-icon>
                     <span class="ml-2">Unlock</span>

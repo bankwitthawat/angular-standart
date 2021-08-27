@@ -18,6 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AppUserService } from '../../app-user.service';
 import * as dayjs from 'dayjs';
 import { AppUserItemView } from 'app/shared/models/viewModels/appUserView';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 @Component({
     selector: 'app-user-item-setting',
@@ -54,7 +55,8 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
         private _fb: FormBuilder,
         private _spinner: NgxSpinnerService,
         private _messageService: MessageService,
-        private _appUserService: AppUserService
+        private _appUserService: AppUserService,
+        private _fuseConfirmationService: FuseConfirmationService
     ) {
         this.id = this._route.snapshot.paramMap.get('id');
     }
@@ -105,13 +107,14 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
             mobilePhone: [null],
             birthDate: [null],
         });
+
+        this.getRoleListToDropDownList();
     }
 
     /**
      * Prepare data
      */
     initialData(): void {
-        this.getRoleListToDropDownList();
         this.getUserById();
     }
 
@@ -146,16 +149,30 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
     }
 
     getUserById(): void {
+        this._spinner.show();
+        this.isLoading = true;
+
         this._appUserService
             .getUserById(+this.id)
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((response: any) => {
-                this.userData = response.data;
-                this.userForm.patchValue(this.userData);
-                if (this.userData.loginAttemptCount) {
-                    this.isUnlockUser = true;
+            .subscribe(
+                (response: any) => {
+
+                    if (response && response.data) {
+                        this.userData = response.data;
+                        this.userForm.patchValue(this.userData);
+                        if (this.userData.loginAttemptCount) {
+                            this.isUnlockUser = true;
+                        }
+                    }
+                    this._spinner.hide();
+                    this.isLoading = false;
+                },
+                (error: any) => {
+                    this._spinner.hide();
+                    this.isLoading = false;
                 }
-            });
+            );
     }
 
     getRoleListToDropDownList(): void {
@@ -168,33 +185,52 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
     }
 
     unlockUser(): void {
-        this._spinner.show();
-        this.isLoading = true;
+        // Set template
+        const config = {
+            title: 'Unlock',
+            message:
+                'Do you want <span class="font-medium">unlock</span> this user ?',
+        };
 
-        this._appUserService
-            .unlockUser(+this.id)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(
-                (response: any) => {
-                    this._spinner.hide();
-                    this.isLoading = false;
-                    this.isUnlockUser = false;
+        // Get template
+        const template = this._fuseConfirmationService.warningTemplate(config);
 
-                    if (response.success) {
-                        this._messageService.add({
-                            severity: 'success',
-                            summary: 'Success',
-                            detail: response.message,
-                        });
+        // Open the confirmation and save the reference
+        const dialogRef = this._fuseConfirmationService.open(template);
 
-                        this.ngOnInit();
-                    }
-                },
-                (error) => {
-                    this._spinner.hide();
-                    this.isLoading = false;
-                    this.isUnlockUser = false;
-                }
-            );
+        dialogRef.beforeClosed().subscribe((result) => {
+            this._spinner.show();
+            this.isLoading = true;
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result === 'confirmed') {
+                this._appUserService
+                    .unlockUser(+this.id)
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe(
+                        (response: any) => {
+                            if (response.success) {
+                                this._messageService.add({
+                                    severity: 'success',
+                                    summary: 'Success',
+                                    detail: response.message,
+                                });
+
+                                this.initialData();
+                            }
+
+                            this._spinner.hide();
+                            this.isLoading = false;
+                            this.isUnlockUser = false;
+                        },
+                        (error) => {
+                            this._spinner.hide();
+                            this.isLoading = false;
+                            this.isUnlockUser = false;
+                        }
+                    );
+            }
+        });
     }
 }

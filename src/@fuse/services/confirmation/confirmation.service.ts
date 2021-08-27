@@ -56,6 +56,60 @@ export class FuseConfirmationService
         });
     }
 
+    successTemplate(template: any): FuseConfirmationConfig {
+        const config: FuseConfirmationConfig = {
+            title: `${template.title}`,
+            message:
+                `${template.message}`,
+            icon: {
+                show: true,
+                name: 'heroicons_outline:check',
+                color: 'warn',
+            },
+            actions: {
+                confirm: {
+                    show: true,
+                    label: 'Ok',
+                    color: 'success',
+                },
+                cancel: {
+                    show: true,
+                    label: 'Cancel',
+                },
+            },
+            dismissible: true,
+        };
+
+        return config;
+    }
+
+    warningTemplate(template: any): FuseConfirmationConfig {
+        const config: FuseConfirmationConfig = {
+            title: `${template.title}`,
+            message:
+                `${template.message}`,
+            icon: {
+                show: true,
+                name: 'heroicons_outline:exclamation',
+                color: 'warning',
+            },
+            actions: {
+                confirm: {
+                    show: true,
+                    label: 'Ok',
+                    color: 'warning',
+                },
+                cancel: {
+                    show: true,
+                    label: 'Cancel',
+                },
+            },
+            dismissible: true,
+        };
+
+        return config;
+    }
+
     removeTemplate(template: any): FuseConfirmationConfig {
         const config: FuseConfirmationConfig = {
             title: `${template.title}`,

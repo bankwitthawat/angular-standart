@@ -4,12 +4,58 @@
 /* ----------------------------------------------------------------------------------------------------- */
 
 body,
-body .p-component
-{
-  font-size: 14px;
+body .p-component {
+    font-size: 14px;
 }
 
 /* mat-form-field / matInput - readonly support */
 ::ng-deep .mat-form-field-appearance-legacy.mat-form-field-readonly .mat-form-field-underline {
-  background-color: rgba(127, 127, 127, 0.25);
+    background-color: rgba(127, 127, 127, 0.25);
+}
+
+/* Success syling */
+.mat-button.mat-success,
+.mat-stroked-button.mat-success {
+    background-color: rgba(16, 185, 129, 1) !important;
+}
+
+.mat-button.mat-success:hover,
+.mat-stroked-button.mat-success:hover {
+    background-color: #f0fff3 !important;
+}
+
+.mat-raised-button.mat-success,
+.mat-flat-button.mat-success,
+.mat-fab.mat-success,
+.mat-mini-fab.mat-success {
+    color: #f0fff3 !important;
+    background-color: rgba(16, 185, 129, 1) !important;
+}
+
+.mat-icon-button.mat-success {
+    background-color: rgba(16, 185, 129, 1) !important;
+}
+
+
+/* warning syling */
+.mat-button.mat-warning,
+.mat-stroked-button.mat-warning {
+    background-color: rgba(245, 158, 11, 1) !important;
+}
+
+.mat-button.mat-warning:hover,
+.mat-stroked-button.mat-warning:hover {
+    background-color: #f0fff3 !important;
+}
+
+.mat-raised-button.mat-warning,
+.mat-flat-button.mat-warning,
+.mat-fab.mat-warning,
+.mat-mini-fab.mat-warning {
+    color: #f0fff3 !important;
+    background-color: rgba(245, 158, 11, 1) !important;
+}
+
+.mat-icon-button.mat-warning {
+    background-color: rgba(245, 158, 11, 1) !important;
 }
