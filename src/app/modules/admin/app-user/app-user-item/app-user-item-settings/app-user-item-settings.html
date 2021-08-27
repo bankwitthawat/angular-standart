@@ -33,16 +33,16 @@
                         <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
                     </button>
                     <mat-menu #actionsMenu="matMenu">
-                        <!-- <button mat-menu-item (click)="onSaveAndExit(false);" [disabled]="isLoading"
+                        <button mat-menu-item (click)="unlockUser();" *ngIf="authorizeAccess.isEdit && isUnlockUser">
+                            Unlock
+                        </button>
+                        <button mat-menu-item (click)="onSaveAndExit(false);" [disabled]="isLoading"
                             *ngIf="authorizeAccess.isEdit">Save</button>
                         <button mat-menu-item (click)="onSaveAndExit(true);" [disabled]="isLoading"
                             *ngIf="authorizeAccess.isEdit">Save
-                            & Exit</button> -->
+                            & Exit</button>
                         <button mat-menu-item (click)="onBack()">Back</button>
-                        <button mat-menu-item (click)="unlockUser();"
-                            *ngIf="authorizeAccess.isEdit && isUnlockUser">
-                            Unlock
-                        </button>
+
                     </mat-menu>
                 </div>
             </div>
@@ -104,7 +104,7 @@
 
                 <!-- Section -->
                 <div class="w-full">
-                    <div class="text-xl">Personal Information</div>
+                    <div class="text-xl font-semibold">Personal Information</div>
                     <div class="text-secondary">Communication details in case we want to connect with you. These will be
                         kept private.</div>
                 </div>
@@ -160,19 +160,20 @@
                 <div class="mt-11 mb-10 border-t"></div>
 
                 <!-- Actions -->
-                <div class="flex items-center justify-end">
-                    <button mat-stroked-button type="button" (click)="onBack()">
-                        Cancel
+                <div class="flex flex-col sm:flex-row sm:flex-rowitems-center sm:flex-row-reverse">
+                    <button class="w-full sm:w-max sm:ml-4" mat-flat-button type="button" [color]="'primary'"
+                        *ngIf="authorizeAccess.isEdit" (click)="onSaveAndExit(false);">
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                        <span class="ml-2">Save</span>
                     </button>
-                    <button class="ml-4" mat-flat-button type="button" [color]="'primary'"
+
+                    <button class="w-full sm:w-max mt-4 sm:m-0 sm:ml-4" mat-flat-button type="button" [color]="'primary'"
                         *ngIf="authorizeAccess.isEdit" (click)="onSaveAndExit(true);">
                         <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
                         <span class="ml-2">Save & Exit</span>
                     </button>
-                    <button class="ml-4" mat-flat-button type="button" [color]="'primary'"
-                        *ngIf="authorizeAccess.isEdit" (click)="onSaveAndExit(false);">
-                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:save'"></mat-icon>
-                        <span class="ml-2">Save</span>
+                    <button mat-stroked-button type="button" class=" mt-4 sm:m-0 sm:ml-4 w-full sm:w-max " (click)="onBack()">
+                        Cancel
                     </button>
                 </div>
 

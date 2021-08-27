@@ -31,6 +31,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
 import { NgxTrimDirectiveModule } from 'ngx-trim-directive';
+import { AppUserItemChangepwdComponent } from './app-user-item/app-user-item-changepwd/app-user-item-changepwd.component';
 
 const PRIMENG_TABLE = [
   TableModule,
@@ -81,7 +82,8 @@ const DIRECTIVE = [
     AppUserListViewComponent,
     AppUserItemViewComponent,
     AppUserItemViewSettingsComponent,
-    AppUserCreateComponent
+    AppUserCreateComponent,
+    AppUserItemChangepwdComponent
   ],
   imports: [
     CommonModule,
