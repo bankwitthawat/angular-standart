@@ -17,6 +17,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppUserService } from '../../app-user.service';
 import * as dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { AppUserItemView } from 'app/shared/models/viewModels/appUserView';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 
@@ -62,6 +63,7 @@ export class AppUserItemViewSettingsComponent implements OnInit, OnDestroy {
         private _fuseConfirmationService: FuseConfirmationService
     ) {
         this.id = this._route.snapshot.paramMap.get('id');
+        dayjs.extend(customParseFormat);
     }
 
     // -----------------------------------------------------------------------------------------------------

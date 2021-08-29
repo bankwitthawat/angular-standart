@@ -10,7 +10,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { SharedModule } from 'app/shared/shared.module';
 import { ResetPasswordComponent } from './reset-password.component';
+import { NgxTrimDirectiveModule } from 'ngx-trim-directive';
 
+const DIRECTIVE = [
+  NgxTrimDirectiveModule
+];
 
 @NgModule({
   declarations: [
@@ -25,7 +29,8 @@ import { ResetPasswordComponent } from './reset-password.component';
     MatInputModule,
     MatProgressSpinnerModule,
     FuseAlertModule,
-    SharedModule
+    SharedModule,
+    ...DIRECTIVE
   ]
 })
 export class ResetPasswordModule { }

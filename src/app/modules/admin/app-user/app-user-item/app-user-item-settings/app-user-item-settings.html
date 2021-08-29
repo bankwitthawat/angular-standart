@@ -112,7 +112,7 @@
                 <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
                     <!-- FName -->
                     <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-form-field class=" w-full">
                             <mat-label>First Name</mat-label>
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user'" matPrefix></mat-icon>
                             <input formControlName="fName" matInput trim="blur">
@@ -120,7 +120,7 @@
                     </div>
                     <!-- LName -->
                     <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-form-field class="w-full">
                             <mat-label>Last Name</mat-label>
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user'" matPrefix></mat-icon>
                             <input formControlName="lName" matInput trim="blur">
@@ -128,15 +128,18 @@
                     </div>
                     <!-- Email -->
                     <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-form-field class="w-full">
                             <mat-label>Email</mat-label>
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:mail'" matPrefix></mat-icon>
                             <input formControlName="email" matInput trim="blur">
+                            <mat-error *ngIf="userForm.get('email').hasError('email')">
+                                Email is not a valid email
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <!-- Phone -->
                     <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-form-field class=" w-full">
                             <mat-label>Mobile Phone</mat-label>
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:phone'" matPrefix></mat-icon>
                             <input formControlName="mobilePhone" matInput trim="blur">
@@ -144,11 +147,11 @@
                     </div>
                     <!-- Birth Date -->
                     <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-form-field class="w-full">
                             <mat-label>Birth Date</mat-label>
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:gift'" matPrefix>
                             </mat-icon>
-                            <input matInput [matDatepicker]="pickerBirthDate" formControlName="birthDate" trim="blur">
+                            <input matInput [matDatepicker]="pickerBirthDate" formControlName="birthDate">
                             <mat-datepicker-toggle matSuffix [for]="pickerBirthDate"></mat-datepicker-toggle>
                             <mat-datepicker #pickerBirthDate></mat-datepicker>
                         </mat-form-field>

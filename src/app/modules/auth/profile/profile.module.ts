@@ -14,6 +14,24 @@ import { profilesRoutes } from './profiles.routing';
 import { ProfileSettingsComponent } from './profile-setting/profile-setting.component';
 import { ProfileSecurityComponent } from './profile-security/profile-security.component';
 import { ProfileComponent } from './profile.component';
+import { NgxTrimDirectiveModule } from 'ngx-trim-directive';
+import { MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+
+const MY_DATE_FORMATS = {
+    parse: {
+        dateInput: 'DD/MM/YYYY',
+    },
+    display: {
+        dateInput: 'DD/MM/YYYY',
+        monthYearLabel: 'MMMM YYYY',
+        dateA11yLabel: 'LL',
+        monthYearA11yLabel: 'MMMM YYYY',
+    },
+};
+
+const DIRECTIVE = [NgxTrimDirectiveModule];
 
 @NgModule({
     declarations: [
@@ -21,7 +39,7 @@ import { ProfileComponent } from './profile.component';
         ProfileSettingsComponent,
         ProfileSecurityComponent,
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(profilesRoutes),
         MatButtonModule,
         MatFormFieldModule,
@@ -32,9 +50,10 @@ import { ProfileComponent } from './profile.component';
         MatSidenavModule,
         MatSlideToggleModule,
         FuseAlertModule,
-        SharedModule
-    ]
+        SharedModule,
+        ...DIRECTIVE,
+        MatDatepickerModule, MatNativeDateModule, MatMomentDateModule,
+    ],
+    providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }],
 })
-export class ProfileModule
-{
-}
+export class ProfileModule {}
