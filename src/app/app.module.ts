@@ -37,7 +37,8 @@ const routerConfig: ExtraOptions = {
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        RouterModule.forRoot(appRoutes, routerConfig),
+        //RouterModule.forRoot(appRoutes, routerConfig),
+        RouterModule.forRoot(appRoutes),
 
         // Fuse, FuseConfig & FuseMockAPI
         FuseModule,
@@ -59,12 +60,7 @@ const routerConfig: ExtraOptions = {
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [
         MessageService,
-        {
-            provide: APP_INITIALIZER,
-            useFactory: appInitializer,
-            multi: true,
-            deps: [AuthenticationService],
-        },
+        { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthenticationService] },
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 

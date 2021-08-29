@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReportRolesComponent } from './report-roles/report-roles.component';
-import { DemoRoutingModule } from './demo-routing.modules';
+import { DemoRoutingModule } from './demo-routing.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDividerModule } from '@angular/material/divider';

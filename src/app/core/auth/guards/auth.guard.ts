@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Observable, of } from 'rxjs';
 import { AuthenticationService } from 'app/shared/services/authentication.service';
 import { AppModuleAuthorize } from 'app/core/user/user.types';
 
@@ -16,13 +16,28 @@ export class AuthGuard implements CanActivate {
         return this._checkAuth(redirectUrl);
     }
 
-    private _checkAuth(redirectURL: string): boolean {
+    canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+    {
+        const redirectUrl = state.url === '/sign-out' ? '/' : state.url;
+        return this._checkAuth(redirectUrl);
+    }
+
+
+    private _checkAuth(redirectURL: string): Observable<boolean> {
         const currentUser = this.authenticationService.currentUserValue;
-        if (!currentUser) {
+        console.log('_checkAuth');
+
+        if ( !currentUser ) {
             this.router.navigate(['sign-in'], { queryParams: { returnUrl: redirectURL } });
-            return false;
+            return of(false);
         }
-        return true;
+
+        if (currentUser && currentUser.isForceChangePwd) {
+            this.router.navigate(['reset-password']);
+            return of(false);
+        }
+
+        return of(true);
     }
 
 }

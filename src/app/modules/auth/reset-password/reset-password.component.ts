@@ -1,37 +1,44 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { FuseValidators } from '@fuse/validators';
 import { FuseAlertType } from '@fuse/components/alert';
-import { AuthService } from 'app/core/auth/auth.service';
+import { FuseValidators } from '@fuse/validators';
+import { AuthenticationService } from 'app/shared/services/authentication.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { MessageService } from 'primeng/api';
+import { ResetPasswordService } from './reset-password.service';
 
 @Component({
-    selector     : 'auth-reset-password',
-    templateUrl  : './reset-password.component.html',
+    selector: 'app-reset-password',
+    templateUrl: './reset-password.component.html',
+    styleUrls: ['./reset-password.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations: fuseAnimations,
 })
-export class AuthResetPasswordComponent implements OnInit
-{
-    @ViewChild('resetPasswordNgForm') resetPasswordNgForm: NgForm;
-
+export class ResetPasswordComponent implements OnInit {
     alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
-        message: ''
+        type: 'success',
+        message: '',
     };
     resetPasswordForm: FormGroup;
     showAlert: boolean = false;
+
+    get form() {
+        return this.resetPasswordForm.controls;
+    }
 
     /**
      * Constructor
      */
     constructor(
-        private _authService: AuthService,
-        private _formBuilder: FormBuilder
-    )
-    {
-    }
+        private _formBuilder: FormBuilder,
+        private _resetPasswordService: ResetPasswordService,
+        private _spinner: NgxSpinnerService,
+        private _messageService: MessageService,
+        private _router: Router,
+        private _authService: AuthenticationService
+    ) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -40,15 +47,26 @@ export class AuthResetPasswordComponent implements OnInit
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Create the form
-        this.resetPasswordForm = this._formBuilder.group({
-                password       : ['', Validators.required],
-                passwordConfirm: ['', Validators.required]
+        this.resetPasswordForm = this._formBuilder.group(
+            {
+                password: [
+                    '',
+                    [
+                        Validators.required,
+                        Validators.pattern(
+                            '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
+                        ),
+                    ],
+                ],
+                passwordConfirm: ['', Validators.required],
             },
             {
-                validators: FuseValidators.mustMatch('password', 'passwordConfirm')
+                validators: FuseValidators.mustMatch(
+                    'password',
+                    'passwordConfirm'
+                ),
             }
         );
     }
@@ -60,52 +78,43 @@ export class AuthResetPasswordComponent implements OnInit
     /**
      * Reset password
      */
-    resetPassword(): void
-    {
-        // Return if the form is invalid
-        if ( this.resetPasswordForm.invalid )
-        {
+    resetPassword(): void {
+        if (this.resetPasswordForm.invalid) {
+            this.resetPasswordForm.markAllAsTouched();
             return;
         }
 
-        // Disable the form
-        this.resetPasswordForm.disable();
+        this._spinner.show();
+        const result = {
+            password: this.form.password.value,
+            passwordConfirm: this.form.passwordConfirm.value,
+        };
 
-        // Hide the alert
-        this.showAlert = false;
+        // console.log(result);
 
-        // Send the request to the server
-        this._authService.resetPassword(this.resetPasswordForm.get('password').value)
-            .pipe(
-                finalize(() => {
+        this._resetPasswordService.forceChangePassword(result).subscribe(
+            (response) => {
+                this._spinner.hide();
 
-                    // Re-enable the form
-                    this.resetPasswordForm.enable();
+                if (response.success) {
+                    this._messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: response.message,
+                    });
 
-                    // Reset the form
-                    this.resetPasswordNgForm.resetForm();
+                    this._authService.signOut();
 
-                    // Show the alert
-                    this.showAlert = true;
-                })
-            )
-            .subscribe(
-                (response) => {
-
-                    // Set the alert
-                    this.alert = {
-                        type   : 'success',
-                        message: 'Your password has been reset.'
-                    };
-                },
-                (response) => {
-
-                    // Set the alert
-                    this.alert = {
-                        type   : 'error',
-                        message: 'Something went wrong, please try again.'
-                    };
                 }
-            );
+            },
+            (error) => {
+                this._spinner.hide();
+            }
+        );
+    }
+
+
+    signOut(): void {
+        this._authService.signOut();
     }
 }

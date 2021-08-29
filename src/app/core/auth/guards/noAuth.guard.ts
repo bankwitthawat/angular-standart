@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Observable, of } from 'rxjs';
 import { AuthenticationService } from 'app/shared/services/authentication.service';
 
 
@@ -16,12 +16,17 @@ export class NoAuthGuard implements CanActivate {
         return this._check();
     }
 
-    private _check(): boolean {
+    canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
+    {
+        return this._check();
+    }
+
+    private _check(): Observable<boolean> {
         const currentUser = this.authenticationService.currentUserValue;
         if (currentUser) {
             this.router.navigate(['']);
-            return false;
+            return of(false);
         }
-        return true;
+        return of(true);
     }
 }
